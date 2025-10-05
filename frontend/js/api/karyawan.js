@@ -2,7 +2,6 @@
 const API_URL = 'http://localhost:8080/api/karyawan';
 
 let dataTableInstance; // simpan instance DataTables global supaya bisa diakses
-let isEditMode = false; // mode edit / tambah karyawan
 
 // tampilkan data table pada saat halaman dimuat
 function fetchAndRenderKaryawan() {

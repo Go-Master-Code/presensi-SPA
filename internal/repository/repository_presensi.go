@@ -94,6 +94,6 @@ func (r *repositoryPresensi) UpdateWaktuPulang(id string, tanggal string, waktuP
 
 func (r *repositoryPresensi) GetPresensiByNamaPerHari(nama string, tanggal string) (model.Presensi, error) {
 	var presensi model.Presensi
-	err := r.db.Joins("Karyawan").Where("karyawan.nama = ? and tanggal = ?", nama, tanggal).First(&presensi).Error
+	err := r.db.Joins("Karyawan").Where("Karyawan.nama = ? and tanggal = ?", nama, tanggal).First(&presensi).Error
 	return presensi, err
 }
