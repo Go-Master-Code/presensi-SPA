@@ -10,6 +10,7 @@ import (
 
 type ServicePresensi interface {
 	GetAllPresensi() ([]dto.PresensiResponse, error)
+	GetPresensiByNamaPerHari(nama string, tanggal string) (dto.PresensiResponse, error)
 	GetPresensiByIdByPeriode(karyawanID string, tanggalAwal string, tanggalAkhir string) ([]dto.PresensiResponse, error)
 	GetPresensiByIdByBulanTahun(karyawanID string, bulan int, tahun int) ([]dto.PresensiResponse, error)
 	GetPresensiByBulanTahun(bulan int, tahun int) ([]dto.PresensiResponse, error)
@@ -111,4 +112,15 @@ func (s *servicePresensi) CreateOrUpdatePresensi(presensi dto.CreatePresensiRequ
 		presensiUpdateDTO := helper.ConvertToDTOPresensiSingle(updatePresensi)
 		return presensiUpdateDTO, nil
 	}
+}
+
+func (s *servicePresensi) GetPresensiByNamaPerHari(nama string, tanggal string) (dto.PresensiResponse, error) {
+	presensi, err := s.repo.GetPresensiByNamaPerHari(nama, tanggal)
+	if err != nil {
+		return dto.PresensiResponse{}, err
+	}
+
+	// convert model to dto
+	presensiDTO := helper.ConvertToDTOPresensiSingle(presensi)
+	return presensiDTO, nil
 }

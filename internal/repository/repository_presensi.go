@@ -8,6 +8,7 @@ import (
 
 type RepositoryPresensi interface {
 	GetAllPresensi() ([]model.Presensi, error)
+	GetPresensiByNamaPerHari(nama string, tanggal string) (model.Presensi, error)
 	GetPresensiByIdByPeriode(karyawanID string, tanggalAwal string, tanggalAkhir string) ([]model.Presensi, error)
 	GetPresensiByIdByBulanTahun(karyawanID string, bulan int, tahun int) ([]model.Presensi, error)
 	GetPresensiByBulanTahun(bulan int, tahun int) ([]model.Presensi, error)
@@ -88,5 +89,11 @@ func (r *repositoryPresensi) UpdateWaktuPulang(id string, tanggal string, waktuP
 		return model.Presensi{}, err
 	}
 
+	return presensi, err
+}
+
+func (r *repositoryPresensi) GetPresensiByNamaPerHari(nama string, tanggal string) (model.Presensi, error) {
+	var presensi model.Presensi
+	err := r.db.Joins("Karyawan").Where("karyawan.nama = ? and tanggal = ?", nama, tanggal).First(&presensi).Error
 	return presensi, err
 }

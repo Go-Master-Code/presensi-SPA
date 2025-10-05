@@ -60,6 +60,7 @@ func main() {
 	// list handler presensi
 	r.GET("/api/presensi", handlerPresensi.GetAllPresensi)
 	r.GET("/api/presensi/by_periode", handlerPresensi.GetPresensiByIdByPeriode)
+	r.GET("/api/presensi/nama", handlerPresensi.GetPresensiByNamaPerHari)
 	r.GET("/api/presensi/karyawan_per_bulan", handlerPresensi.GetPresensiByIdByBulanTahun)
 	r.GET("/api/presensi/by_month", handlerPresensi.GetPresensiByBulanTahun)
 	r.POST("/api/presensi", handlerPresensi.CreatePresensi)

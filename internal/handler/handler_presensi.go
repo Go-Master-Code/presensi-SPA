@@ -130,3 +130,16 @@ func (h *handlerPresensi) CreatePresensi(c *gin.Context) {
 
 	helper.StatusSuksesCreateData(c, newPresensiDTO)
 }
+
+func (h *handlerPresensi) GetPresensiByNamaPerHari(c *gin.Context) {
+	nama := c.Query("nama")
+	tanggal := c.Query("tanggal")
+
+	presensi, err := h.service.GetPresensiByNamaPerHari(nama, tanggal)
+	if err != nil {
+		helper.ErrorFetchDataFromDB(c, err)
+		return
+	}
+
+	helper.StatusSuksesGetData(c, presensi)
+}
