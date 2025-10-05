@@ -295,7 +295,7 @@ function openModalEdit(karyawan) {
     document.getElementById("edit-id").value = karyawan.id;
     document.getElementById("edit-nama").value = karyawan.nama;
     document.getElementById("edit-jenjang").value = karyawan.jenjang_id;
-    document.getElementById("edit-aktif").value = karyawan.aktif;
+    document.getElementById("edit-aktif").checked = karyawan.aktif;
 
     $('#modalEditKaryawan').modal('show'); // pakai bootstrap show modal
 }
@@ -312,9 +312,9 @@ document.getElementById("form-edit-karyawan").addEventListener("submit", functio
     const id = document.getElementById("edit-id").value; 
     const nama = document.getElementById("edit-nama").value; 
     const jenjang = Number(document.getElementById("edit-jenjang").value);
-    const aktif = document.getElementById("edit-aktif").value;
+    const aktif = document.getElementById("edit-aktif").checked; // menghasilkan true/false - boolean untuk request body
     
-    console.log({ nama, jenjang, aktif});
+    console.log({ id, nama, jenjang, aktif});
     
     // 2. kirim request ke backend
     fetch(`/api/karyawan/${id}`, {
@@ -340,21 +340,24 @@ document.getElementById("form-edit-karyawan").addEventListener("submit", functio
         return res.json();
     })
     .then(data => {
-        console.log(data)
+        console.log(data);
         // 4. berikan alert berisi data yang berhasil ditambahkan
         // showModalAlert(`Data karyawan dengan ID <strong>${data.data.id}</strong> berhasil diupdate!`, 'success');
 
         // 5. kosongkan elemen input modalEdit
-        document.getElementById("id-edit").value="";
-        document.getElementById("nama-edit").value="";
-        document.getElementById("jenjang-edit").selectedIndex=0;
-        document.getElementById("aktif-edit").selectedIndex=0;
+        document.getElementById("edit-id").value="";
+        document.getElementById("edit-nama").value="";
+        document.getElementById("edit-jenjang").selectedIndex=0;
+        document.getElementById("edit-aktif").checked=false;
 
         // 6. reload data karyawan dari db (hasil update)
         fetchAndRenderKaryawan();
-
+      
         // 7. tutup modal
-        $('#modalKaryawan').modal('hide');
+        $('#modalEditKaryawan').modal('hide');
+
+        // 8. tampilkan notifikasi
+        showAlert(`Data karyawan dengan ID '${data.data.id}' berhasil diupdate!`, 'success');
     })
     // 8. catch error
     .catch(err => showModalAlert('Terjadi kesalahan: ' + err.message, 'danger'));

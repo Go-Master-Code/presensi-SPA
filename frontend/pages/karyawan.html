@@ -147,16 +147,13 @@
                                     </select>
                                 </div>
                             </div>
-                             <div class="form-group row">
-                                <label for="edit-aktif" class="col-form-label col-md-4">
-                                    Aktif:<span class="text-danger">*</span>
-                                </label>
-                                <div class="col-md-8">
-                                    <select class="custom-select" id="edit-aktif" name="edit-aktif" required>
-                                        <option selected disabled value="">Pilih Status</option>
-                                        <option value="true">Aktif</option>
-                                        <option value="false">Tidak</option>
-                                    </select>
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-4">Aktif:</label>
+                                <div class="col-md-8 d-flex align-items-center">
+                                    <div class="form-check mb-0">
+                                        <input type="checkbox" class="form-check-input" id="edit-aktif" name="edit-aktif">
+                                        <label class="form-check-label" for="edit-aktif">Ya</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
