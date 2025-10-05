@@ -1,5 +1,5 @@
 // Ganti URL sesuai endpoint backend kamu
-const API_URL = 'http://192.168.227.129:8080/api/karyawan';
+const API_URL = 'http://localhost:8080/api/karyawan';
 
 let dataTableInstance; // simpan instance DataTables global supaya bisa diakses
 let isEditMode = false; // mode edit / tambah karyawan
@@ -57,7 +57,7 @@ function fetchAndRenderKaryawan() {
                 karyawan.aktif ? 'Ya' : 'Tidak',
                 `
                 <button class="btn btn-sm btn-info btn-edit" onclick='openModalEdit(${JSON.stringify(karyawan)})'><i class="fas fa-edit"></i> Edit</button>
-                <button class="btn btn-sm btn-danger btn-delete" onClick="showDeleteConfirmModal(${karyawan.id})" data-id="${karyawan.id}"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button class="btn btn-sm btn-danger btn-delete" onClick="showDeleteConfirmModal('${karyawan.id}')" data-id="${karyawan.id}"><i class="fas fa-trash-alt"></i> Delete</button>
                 `
             ]),
             columnDefs: [
@@ -90,12 +90,19 @@ function fetchAndRenderKaryawan() {
 function appendKaryawan(karyawan) {
     const aktif = karyawan.aktif ? 'Ya' : 'Tidak'; // true=Ya, false=Tidak
 
+    // tambahkan elemen button edit dan hapus
+    const aksiButtons = `
+        <button class="btn btn-sm btn-info btn-edit" onclick='openModalEdit(${JSON.stringify(karyawan)})'><i class="fas fa-edit"></i> Edit</button>
+        <button class="btn btn-sm btn-danger btn-delete" onClick="showDeleteConfirmModal('${karyawan.id}')" data-id="${karyawan.id}"><i class="fas fa-trash-alt"></i> Delete</button>
+    `;
+
     // jangan pakai elemen tr dan td lagi
     dataTableInstance.row.add([
         karyawan.id,
         karyawan.nama,
         karyawan.jenjang,
-        aktif
+        aktif,
+        aksiButtons // -> kolom ke 5 yang berisi aksi edit dan delete
     ]).draw(false);
 }
 
@@ -160,7 +167,12 @@ $(document).ready(function() {
         }
     });
 
+    // pindahkan focus dari dalam modal ke tombol tambah data (di html utama)
     $('#modalKaryawan').on('hidden.bs.modal', function () { // setelah modal add karyawan di hidden
+        $('[data-toggle="modal"][data-target="#modalKaryawan"]').trigger('focus'); // pindahkan ke tombol tambah karyawan
+    });
+
+    $('#modalEditKaryawan').on('hidden.bs.modal', function () { // setelah modal delete karyawan di hidden
         $('[data-toggle="modal"][data-target="#modalKaryawan"]').trigger('focus'); // pindahkan ke tombol tambah karyawan
     });
 
