@@ -133,7 +133,7 @@ document.getElementById("form-karyawan").addEventListener("submit", function(e) 
     .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             const errText = await res.text();
-            throw new Error("Gagal tambah data karyawan\n",errText)
+            throw new Error(`Gagal simpan data karyawan:\n${errText}`);
         }
         return res.json();
     })

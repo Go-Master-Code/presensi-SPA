@@ -86,10 +86,13 @@ func main() {
 	r.Static("/assets", "./frontend/assets")
 
 	r.GET("/", func(c *gin.Context) {
-		c.File("./frontend/pages/index.html")
+		c.File("./frontend/pages/dashboard.html")
 	})
 	r.GET("/karyawan", func(c *gin.Context) {
 		c.File("./frontend/pages/karyawan.html")
+	})
+	r.GET("/presensi", func(c *gin.Context) {
+		c.File("./frontend/pages/presensi.html")
 	})
 
 	// run server
