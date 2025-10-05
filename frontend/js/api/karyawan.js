@@ -302,3 +302,60 @@ function openModalEdit(karyawan) {
 function closeModalEdit() {
     $('#modalEditKaryawan').modal('hide');  // tutup modal dengan bootstrap
 }
+
+// script untuk update data sesuai dengan input pada modal
+// event listener submit form add karyawan
+document.getElementById("form-edit-karyawan").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // 1. tangkap input dari textbox
+    const id = document.getElementById("edit-id").value; 
+    const nama = document.getElementById("edit-nama").value; 
+    const jenjang = Number(document.getElementById("edit-jenjang").value);
+    const aktif = document.getElementById("edit-aktif").value;
+    
+    console.log({ nama, jenjang, aktif});
+    
+    // 2. kirim request ke backend
+    fetch(`/api/karyawan/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ // request body dalam bentuk key - value (key = nama field json nya, lihat di dto)
+            id: id,
+            nama: nama,
+            jenjang_id: jenjang,
+            aktif: aktif,
+        })
+    })
+    .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
+        if (!res.ok) {
+            const errJson = await res.json(); // coba ambil json dari error
+            const errMsg = errJson.message || "Terjadi kesalahan yang tidak diketahui"; // ambil json "message" dari response, setelah || adalah pesan default kalau errJson.Msg tidak ada
+            // throw new Error("Gagal tambah data: " + errMsg);
+            alert("Gagal update data karyawan: "+errMsg);
+            return;
+        }
+        return res.json();
+    })
+    .then(data => {
+        console.log(data)
+        // 4. berikan alert berisi data yang berhasil ditambahkan
+        // showModalAlert(`Data karyawan dengan ID <strong>${data.data.id}</strong> berhasil diupdate!`, 'success');
+
+        // 5. kosongkan elemen input modalEdit
+        document.getElementById("id-edit").value="";
+        document.getElementById("nama-edit").value="";
+        document.getElementById("jenjang-edit").selectedIndex=0;
+        document.getElementById("aktif-edit").selectedIndex=0;
+
+        // 6. reload data karyawan dari db (hasil update)
+        fetchAndRenderKaryawan();
+
+        // 7. tutup modal
+        $('#modalKaryawan').modal('hide');
+    })
+    // 8. catch error
+    .catch(err => showModalAlert('Terjadi kesalahan: ' + err.message, 'danger'));
+});
