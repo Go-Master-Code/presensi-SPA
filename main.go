@@ -6,6 +6,7 @@ import (
 	"api-presensi/internal/repository"
 	"api-presensi/internal/service"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,6 +14,9 @@ func main() {
 	database.InitDB() // initDB + cek koneksi
 
 	r := gin.Default()
+
+	// Tambahkan ini
+	r.Use(cors.Default())
 
 	// dependency injection user
 	repoUser := repository.NewRepositoryUser(database.DB)

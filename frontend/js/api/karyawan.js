@@ -1,5 +1,5 @@
 // Ganti URL sesuai endpoint backend kamu
-const API_URL = 'http://localhost:8080/api/karyawan';
+const API_URL = 'http://http://192.168.227.129/:8080/api/karyawan';
 
 let dataTableInstance; // simpan instance DataTables global supaya bisa diakses
 let isEditMode = false; // mode edit / tambah karyawan
