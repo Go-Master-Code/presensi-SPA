@@ -63,6 +63,7 @@ func main() {
 	r.GET("/api/presensi/nama", handlerPresensi.GetPresensiByNamaPerHari)
 	r.GET("/api/presensi/karyawan_per_bulan", handlerPresensi.GetPresensiByIdByBulanTahun)
 	r.GET("/api/presensi/by_month", handlerPresensi.GetPresensiByBulanTahun)
+	r.GET("/api/presensi/harian", handlerPresensi.GetPresensiHarian)
 	r.POST("/api/presensi", handlerPresensi.CreatePresensi)
 
 	// dependency injection hari kerja

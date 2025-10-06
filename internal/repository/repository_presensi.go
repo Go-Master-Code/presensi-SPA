@@ -12,6 +12,7 @@ type RepositoryPresensi interface {
 	GetPresensiByIdByPeriode(karyawanID string, tanggalAwal string, tanggalAkhir string) ([]model.Presensi, error)
 	GetPresensiByIdByBulanTahun(karyawanID string, bulan int, tahun int) ([]model.Presensi, error)
 	GetPresensiByBulanTahun(bulan int, tahun int) ([]model.Presensi, error)
+	GetPresensiHarian(tanggal string) ([]model.Presensi, error)
 	CreatePresensi(presensi model.Presensi) (model.Presensi, error)
 	CheckPresensiMasuk(id string, tanggal string) (model.Presensi, error)
 	UpdateWaktuPulang(id string, tanggal string, waktuPulang string) (model.Presensi, error)
@@ -46,6 +47,12 @@ func (r *repositoryPresensi) GetPresensiByIdByBulanTahun(karyawanID string, bula
 func (r *repositoryPresensi) GetPresensiByBulanTahun(bulan int, tahun int) ([]model.Presensi, error) {
 	var presensi []model.Presensi
 	err := r.db.Preload("Karyawan").Where("MONTH(tanggal) = ? and YEAR(tanggal) = ?", bulan, tahun).Find(&presensi).Error
+	return presensi, err
+}
+
+func (r *repositoryPresensi) GetPresensiHarian(tanggal string) ([]model.Presensi, error) {
+	var presensi []model.Presensi
+	err := r.db.Preload("Karyawan").Where("tanggal = ?", tanggal).Find(&presensi).Error
 	return presensi, err
 }
 

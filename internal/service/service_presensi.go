@@ -14,6 +14,7 @@ type ServicePresensi interface {
 	GetPresensiByIdByPeriode(karyawanID string, tanggalAwal string, tanggalAkhir string) ([]dto.PresensiResponse, error)
 	GetPresensiByIdByBulanTahun(karyawanID string, bulan int, tahun int) ([]dto.PresensiResponse, error)
 	GetPresensiByBulanTahun(bulan int, tahun int) ([]dto.PresensiResponse, error)
+	GetPresensiHarian(tanggal string) ([]dto.PresensiResponse, error)
 	CreateOrUpdatePresensi(presensi dto.CreatePresensiRequest) (dto.PresensiResponse, error)
 }
 
@@ -60,6 +61,17 @@ func (s *servicePresensi) GetPresensiByIdByBulanTahun(karyawanID string, bulan i
 
 func (s *servicePresensi) GetPresensiByBulanTahun(bulan int, tahun int) ([]dto.PresensiResponse, error) {
 	presensi, err := s.repo.GetPresensiByBulanTahun(bulan, tahun)
+	if err != nil {
+		return []dto.PresensiResponse{}, err
+	}
+
+	// convert model to dto
+	presensiDTO := helper.ConvertToDTOPresensiPlural(presensi)
+	return presensiDTO, nil
+}
+
+func (s *servicePresensi) GetPresensiHarian(tanggal string) ([]dto.PresensiResponse, error) {
+	presensi, err := s.repo.GetPresensiHarian(tanggal)
 	if err != nil {
 		return []dto.PresensiResponse{}, err
 	}

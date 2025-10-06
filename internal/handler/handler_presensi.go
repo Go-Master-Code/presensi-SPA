@@ -113,6 +113,23 @@ func (h *handlerPresensi) GetPresensiByBulanTahun(c *gin.Context) {
 	helper.StatusSuksesGetData(c, presensi)
 }
 
+func (h *handlerPresensi) GetPresensiHarian(c *gin.Context) {
+	tanggal := c.Query("tanggal")
+	presensi, err := h.service.GetPresensiHarian(tanggal)
+	if err != nil {
+		helper.ErrorFetchDataFromDB(c, err)
+		return
+	}
+
+	// cek apakah ada row yang di return
+	if len(presensi) < 1 {
+		helper.ErrorDataNotFound(c)
+		return
+	}
+
+	helper.StatusSuksesGetData(c, presensi)
+}
+
 func (h *handlerPresensi) CreatePresensi(c *gin.Context) {
 	var newPresensi dto.CreatePresensiRequest
 	// parsing json
