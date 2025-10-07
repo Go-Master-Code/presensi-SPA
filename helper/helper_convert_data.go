@@ -39,6 +39,7 @@ func ConvertToDTOKaryawanPlural(karyawan []model.Karyawan) []dto.KaryawanRespons
 			JenjangID: k.JenjangID,
 			Jenjang:   k.Jenjang.Nama,
 			Aktif:     k.Aktif,
+			CreatedAt: k.CreatedAt,
 		})
 	}
 	return karyawanDTO
@@ -51,6 +52,7 @@ func ConvertToDTOKaryawanSingle(karyawan model.Karyawan) dto.KaryawanResponse {
 	karyawanDTO.JenjangID = karyawan.JenjangID
 	karyawanDTO.Jenjang = karyawan.Jenjang.Nama
 	karyawanDTO.Aktif = karyawan.Aktif
+	karyawanDTO.CreatedAt = karyawan.CreatedAt
 	return karyawanDTO
 }
 

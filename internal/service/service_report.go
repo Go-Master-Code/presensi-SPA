@@ -1,23 +1,24 @@
 package service
 
 import (
+	"api-presensi/internal/model"
 	"api-presensi/internal/repository"
 	"time"
 )
 
-type ServiceHariKerja interface {
-	HitungHariKerja(bulan, tahun int) (int, error)
+type ServiceReport struct {
+	RepoHariLibur repository.RepositoryHariLibur
+	RepoPresensi  repository.RepositoryPresensi
 }
 
-type serviceHariKerja struct {
-	repo repository.RepositoryHariLibur
+func NewServiceReport(repo1 repository.RepositoryHariLibur, repo2 repository.RepositoryPresensi) *ServiceReport {
+	return &ServiceReport{
+		RepoHariLibur: repo1,
+		RepoPresensi:  repo2,
+	}
 }
 
-func NewServiceHariLibur(repo repository.RepositoryHariLibur) ServiceHariKerja {
-	return &serviceHariKerja{repo}
-}
-
-func (s *serviceHariKerja) HitungHariKerja(bulan, tahun int) (int, error) {
+func (s *ServiceReport) GenerateReportKehadiran(bulan, tahun int) (*model.KehadiranReport, error) {
 	// loc := time.FixedZone("WIB", 7*3600) // 7 jam dari UTC
 	loc, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
@@ -28,14 +29,14 @@ func (s *serviceHariKerja) HitungHariKerja(bulan, tahun int) (int, error) {
 	// => 2025-10-01 00:00:00 (Waktu Jakarta)
 	end := start.AddDate(0, 1, -1) // tambah 1 bulan kurangi 1 hari (artinya hari terakhir di bulan yang sama)
 
-	// ambil hari libur dari repo
-	hariKerja, err := s.repo.GetHariKerjaPerBulan(start, end)
+	// ambil hari kerja per bulan
+	hariLibur, err := s.RepoHariLibur.GetHariKerjaPerBulan(start, end)
 	if err != nil {
-		return 0, err
+		return &model.KehadiranReport{}, err
 	}
 
 	liburMap := make(map[string]bool)
-	for _, h := range hariKerja {
+	for _, h := range hariLibur {
 		// iterasi hariLibur, masukkan ke dalam map (key=tanggal, value=true)
 		liburMap[h.Tanggal.Format("2006-01-02")] = true
 	}
@@ -53,5 +54,21 @@ func (s *serviceHariKerja) HitungHariKerja(bulan, tahun int) (int, error) {
 		}
 	}
 
-	return total, nil
+	// ambil data hari libur di bulan itu
+	// jmlHariLibur, err := s.RepoHariLibur.HitungJumlahLiburPerBulan(start, end)
+	// if err != nil {
+	// 	return &model.KehadiranReport{}, err
+	// }
+
+	// ambil data presensi karyawan per bulan
+	dataKehadiran, err := s.RepoPresensi.GetPresensiAllPerBulan(bulan, tahun)
+
+	if err != nil {
+		return &model.KehadiranReport{}, err
+	}
+
+	return &model.KehadiranReport{
+		HariKerja: total,
+		Data:      dataKehadiran,
+	}, nil
 }

@@ -4,6 +4,8 @@ import (
 	"api-presensi/helper"
 	"api-presensi/internal/dto"
 	"api-presensi/internal/service"
+	"api-presensi/internal/utils/report/karyawan"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -96,4 +98,24 @@ func (h *handlerKaryawan) UpdateKaryawan(c *gin.Context) {
 	}
 
 	helper.StatusSuksesUpdateData(c, karyawanDTO)
+}
+
+func (h *handlerKaryawan) GetKaryawanReport(c *gin.Context) {
+	// get data karyawan from db
+	results, err := h.service.GetAllKaryawan()
+	if err != nil {
+		helper.ErrorFetchDataFromDB(c, err)
+		return
+	}
+
+	// konversi data ke dalam bytes
+	pdfBytes, err := karyawan.GenerateReportKaryawan(results)
+	if err != nil {
+		helper.ErrorGenerateReport(c, err)
+		return
+	}
+
+	c.Header("Content-Type", "application/pdf")
+	c.Header("Content-Disposition", "attachment; filename=laporan_karyawan.pdf")
+	c.Data(http.StatusOK, "application/pdf", pdfBytes)
 }

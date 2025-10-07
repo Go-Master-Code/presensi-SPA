@@ -8,7 +8,7 @@ import (
 )
 
 type RepositoryHariLibur interface {
-	GetLiburPerBulan(start, end time.Time) ([]model.HariLibur, error)
+	GetHariKerjaPerBulan(start, end time.Time) ([]model.HariLibur, error)
 }
 
 type repositoryHariLibur struct {
@@ -19,7 +19,7 @@ func NewRepositoryHariLibur(db *gorm.DB) RepositoryHariLibur {
 	return &repositoryHariLibur{db}
 }
 
-func (r *repositoryHariLibur) GetLiburPerBulan(start, end time.Time) ([]model.HariLibur, error) {
+func (r *repositoryHariLibur) GetHariKerjaPerBulan(start, end time.Time) ([]model.HariLibur, error) {
 	var hariLibur []model.HariLibur
 	err := r.db.Where("tanggal BETWEEN ? AND ?", start, end).Find(&hariLibur).Error
 	return hariLibur, err

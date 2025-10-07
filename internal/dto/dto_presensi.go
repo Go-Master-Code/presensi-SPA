@@ -27,3 +27,9 @@ type PresensiResponse struct {
 	WaktuPulang  string `json:"waktu_pulang"`
 	Keterangan   string `json:"keterangan"`
 }
+
+type KehadiranResult struct {
+	KaryawanID string `json:"karyawan_id"`
+	Nama       string `json:"nama"`
+	Kehadiran  int    `json:"kehadiran"`
+}

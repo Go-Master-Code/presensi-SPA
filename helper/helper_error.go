@@ -140,3 +140,11 @@ func ErrorHitungHariKerja(c *gin.Context, err error) {
 		Error:   err.Error(),
 	})
 }
+
+func ErrorGenerateReport(c *gin.Context, err error) {
+	c.JSON(http.StatusInternalServerError, AllErrors{
+		Code:    http.StatusInternalServerError,
+		Message: "gagal generate report",
+		Error:   err.Error(),
+	})
+}

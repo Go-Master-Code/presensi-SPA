@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"api-presensi/internal/dto"
 	"api-presensi/internal/model"
 
 	"gorm.io/gorm"
@@ -16,6 +17,7 @@ type RepositoryPresensi interface {
 	CreatePresensi(presensi model.Presensi) (model.Presensi, error)
 	CheckPresensiMasuk(id string, tanggal string) (model.Presensi, error)
 	UpdateWaktuPulang(id string, tanggal string, waktuPulang string) (model.Presensi, error)
+	GetPresensiAllPerBulan(bulan int, tahun int) ([]dto.KehadiranResult, error) // untuk report presensi semua karyawan per bulan
 }
 
 type repositoryPresensi struct {
@@ -103,4 +105,20 @@ func (r *repositoryPresensi) GetPresensiByNamaPerHari(nama string, tanggal strin
 	var presensi model.Presensi
 	err := r.db.Joins("Karyawan").Where("Karyawan.nama = ? and tanggal = ?", nama, tanggal).First(&presensi).Error
 	return presensi, err
+}
+
+func (r *repositoryPresensi) GetPresensiAllPerBulan(bulan int, tahun int) ([]dto.KehadiranResult, error) {
+	var results []dto.KehadiranResult
+
+	err := r.db.Table("presensi_karyawan AS p").
+		Select("p.karyawan_id, k.nama, COUNT(*) AS kehadiran").
+		Joins("JOIN karyawan k ON p.karyawan_id = k.id").
+		Joins("LEFT JOIN hari_libur l ON p.tanggal = l.tanggal").
+		Where("MONTH(p.tanggal) = ? AND YEAR(p.tanggal) = ? AND l.tanggal IS NULL AND DAYOFWEEK(p.tanggal) BETWEEN 2 AND 6", bulan, tahun).
+		Group("p.karyawan_id, k.nama").
+		Scan(&results).Error
+
+	// query DAYOFWEEK(p.tanggal) BETWEEN 2 AND 6 artinya hanya hitung hari senin-jumat
+
+	return results, err
 }

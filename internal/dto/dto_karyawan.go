@@ -1,5 +1,7 @@
 package dto
 
+import "time"
+
 type CreateKaryawanRequest struct {
 	ID        string `json:"id" binding:"required,min=10,max=10"` // UID 10 digit
 	Nama      string `json:"nama" binding:"required,max=50"`
@@ -15,9 +17,10 @@ type UpdateKaryawanRequest struct {
 }
 
 type KaryawanResponse struct {
-	ID        string `json:"id"`
-	Nama      string `json:"nama"`
-	Aktif     bool   `json:"aktif"`
-	JenjangID int    `json:"jenjang_id"`
-	Jenjang   string `json:"jenjang"`
+	ID        string    `json:"id"`
+	Nama      string    `json:"nama"`
+	Aktif     bool      `json:"aktif"`
+	JenjangID int       `json:"jenjang_id"`
+	Jenjang   string    `json:"jenjang"`
+	CreatedAt time.Time `json:"created_at"`
 }

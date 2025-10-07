@@ -5,6 +5,7 @@ go 1.24.4
 require (
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.11.0
+	github.com/go-pdf/fpdf v0.9.0
 	golang.org/x/crypto v0.42.0
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.31.0
