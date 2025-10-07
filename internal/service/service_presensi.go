@@ -16,7 +16,6 @@ type ServicePresensi interface {
 	GetPresensiByBulanTahun(bulan int, tahun int) ([]dto.PresensiResponse, error)
 	GetPresensiHarian(tanggal string) ([]dto.PresensiResponse, error)
 	CreateOrUpdatePresensi(presensi dto.CreatePresensiRequest) (dto.PresensiResponse, error)
-	GetPresensiAllPerBulan(bulan int, tahun int) ([]dto.KehadiranResult, error)
 }
 
 type servicePresensi struct {
@@ -136,13 +135,4 @@ func (s *servicePresensi) GetPresensiByNamaPerHari(nama string, tanggal string) 
 	// convert model to dto
 	presensiDTO := helper.ConvertToDTOPresensiSingle(presensi)
 	return presensiDTO, nil
-}
-
-func (s *servicePresensi) GetPresensiAllPerBulan(bulan int, tahun int) ([]dto.KehadiranResult, error) {
-	results, err := s.repo.GetPresensiAllPerBulan(bulan, tahun)
-	if err != nil {
-		return []dto.KehadiranResult{}, err
-	}
-
-	return results, nil
 }
