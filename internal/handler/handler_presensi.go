@@ -160,36 +160,3 @@ func (h *handlerPresensi) GetPresensiByNamaPerHari(c *gin.Context) {
 
 	helper.StatusSuksesGetData(c, presensi)
 }
-
-func (h *handlerPresensi) GetPresensiBulananReport(c *gin.Context) {
-	// bulanStr := c.Query("bulan")
-	// bulan, err := strconv.Atoi(bulanStr)
-	// if err != nil {
-	// 	helper.ErrorParsingAtoi(c, err)
-	// 	return
-	// }
-
-	// tahunStr := c.Query("tahun")
-	// tahun, err := strconv.Atoi(tahunStr)
-	// if err != nil {
-	// 	helper.ErrorParsingAtoi(c, err)
-	// 	return
-	// }
-
-	// results, err := h.service.GetPresensiAllPerBulan(bulan, tahun)
-	// if err != nil {
-	// 	helper.ErrorFetchDataFromDB(c, err)
-	// 	return
-	// }
-
-	// konversi data ke dalam bytes
-	// pdfBytes, err := presensi.GenerateReportPresensiAllPerBulan(bulan, tahun, results)
-	// if err != nil {
-	// 	helper.ErrorGenerateReport(c, err)
-	// 	return
-	// }
-
-	// c.Header("Content-Type", "application/pdf")
-	// c.Header("Content-Disposition", "attachment; filename=laporan.pdf")
-	// c.Data(http.StatusOK, "application/pdf", pdfBytes)
-}
