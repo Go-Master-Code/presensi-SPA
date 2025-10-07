@@ -54,12 +54,6 @@ func (s *ServiceReport) GenerateReportKehadiran(bulan, tahun int) (*model.Kehadi
 		}
 	}
 
-	// ambil data hari libur di bulan itu
-	// jmlHariLibur, err := s.RepoHariLibur.HitungJumlahLiburPerBulan(start, end)
-	// if err != nil {
-	// 	return &model.KehadiranReport{}, err
-	// }
-
 	// ambil data presensi karyawan per bulan
 	dataKehadiran, err := s.RepoPresensi.GetPresensiAllPerBulan(bulan, tahun)
 
