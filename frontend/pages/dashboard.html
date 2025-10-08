@@ -126,8 +126,8 @@
                     <i class="fas fa-file-alt mr-2"></i> Laporan
                 </a>
                 <div class="dropdown-menu bg-dark border-0" aria-labelledby="menu-laporan">
-                    <a class="dropdown-item text-light" href="#" id="menu-laporan-harian">Laporan Harian</a>
-                    <a class="dropdown-item text-light" href="#" id="menu-laporan-bulanan">Laporan Bulanan</a>
+                    <a class="dropdown-item text-light" href="#" id="menu-laporan-harian">Presensi Harian</a>
+                    <a class="dropdown-item text-light" href="#" id="menu-laporan-bulanan">Presensi Bulanan</a>
                 </div>
             </li>
         </ul>
@@ -138,7 +138,7 @@
         <section id="section-karyawan">
             <header class="d-flex align-items-center justify-content-between mb-3">
                 <h1>Data Karyawan</h1>
-                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalKaryawan">
+                <button type="button" id="button-tambah-karyawan" class="btn btn-dark" data-toggle="modal" data-target="#modalKaryawan">
                     Tambah Karyawan
                 </button>
             </header>
@@ -375,13 +375,13 @@
                         <table id="table-presensi" class="table table-striped table-bordered table-hover mb-0">
                             <thead class="thead-light">
                                 <tr>
-                                <th style="text-align: center;">ID</th>
-                                <th style="text-align: center;">ID Karyawan</th>
-                                <th style="text-align: center;">Nama</th>
-                                <th style="text-align: center;">Tanggal</th>
-                                <th style="text-align: center;">Waktu Masuk</th>
-                                <th style="text-align: center;">Waktu Pulang</th>
-                                <th style="text-align: center;">Keterangan</th>
+                                    <th style="text-align: center;">ID</th>
+                                    <th style="text-align: center;">ID Karyawan</th>
+                                    <th style="text-align: center;">Nama</th>
+                                    <th style="text-align: center;">Tanggal</th>
+                                    <th style="text-align: center;">Waktu Masuk</th>
+                                    <th style="text-align: center;">Waktu Pulang</th>
+                                    <th style="text-align: center;">Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody>

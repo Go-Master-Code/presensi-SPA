@@ -171,8 +171,22 @@ $(document).ready(function() {
         $('[data-toggle="modal"][data-target="#modalKaryawan"]').trigger('focus'); // pindahkan ke tombol tambah karyawan
     });
 
+    $('#modalEditKaryawan').on('hide.bs.modal', function () { // event sebelum modal ditutup
+        const focusedEl = document.activeElement; // ambil elemen yang sedang fokus (biasanya tombol close di modal)
+        if ($(this).has(focusedEl).length) { // memeriksa apakah focusedEL adalah (anak turunan) dari komponen modal, jika hasilnya > 0 maka fokus berada di dalam modal
+            focusedEl.blur(); // remove focus dari elemen tersebut
+        }
+    });
+
     $('#modalEditKaryawan').on('hidden.bs.modal', function () { // setelah modal delete karyawan di hidden
         $('[data-toggle="modal"][data-target="#modalKaryawan"]').trigger('focus'); // pindahkan ke tombol tambah karyawan
+    });
+
+    $('#confirmDeleteModal').on('hide.bs.modal', function () { // event sebelum modal ditutup
+        const focusedEl = document.activeElement; // ambil elemen yang sedang fokus (biasanya tombol close di modal)
+        if ($(this).has(focusedEl).length) { // memeriksa apakah focusedEL adalah (anak turunan) dari komponen modal, jika hasilnya > 0 maka fokus berada di dalam modal
+            focusedEl.blur(); // remove focus dari elemen tersebut
+        }
     });
 
     $('#confirmDeleteModal').on('hidden.bs.modal', function () { // setelah modal delete karyawan di hidden
@@ -205,11 +219,19 @@ $(document).ready(function() {
             div.dataTables_filter input adalah input search-nya.
             Kita memberi id="search-karyawan" agar tidak muncul warning.
     */
+
+    // $('#table-karyawan').on('init.dt', function() {
+    //     $('div.dataTables_filter input').attr('id', 'search-karyawan');
+    // });
+
     $('#table-karyawan').on('init.dt', function() {
-        $('div.dataTables_filter input').attr('id', 'search-karyawan');
+        var $filter = $(this).closest('.dataTables_wrapper').find('div.dataTables_filter');
+        var $input = $filter.find('input[type="search"]').first();
+        $input.attr('id', 'search-karyawan');
+        $filter.find('label').attr('for', 'search-karyawan'); // biar label sesuai
     });
 
-    fetchAndRenderKaryawan();
+    fetchAndRenderKaryawan(); // tampilkan data ke dalam dataTable
 
     // saat modal dibuka langsung fokus ke ID
     $('#modalKaryawan').on('shown.bs.modal', function () {
