@@ -75,6 +75,9 @@ func main() {
 
 	// list handler hari kerja
 	r.GET("/api/hari_kerja_aktif", handlerHariKerja.GetHariKerjaAktif)
+	r.GET("/api/hari_libur", handlerHariKerja.GetHariLibur)
+	r.DELETE("/api/hari_libur/:id", handlerHariKerja.DeleteHariLibur)
+	r.POST("/api/hari_libur", handlerHariKerja.CreateHariLibur)
 
 	// dependency injection report
 	serviceReport := service.NewServiceReport(repoHariKerja, repoPresensi)

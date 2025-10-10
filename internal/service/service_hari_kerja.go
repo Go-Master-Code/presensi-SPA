@@ -1,12 +1,18 @@
 package service
 
 import (
+	"api-presensi/helper"
+	"api-presensi/internal/dto"
+	"api-presensi/internal/model"
 	"api-presensi/internal/repository"
 	"time"
 )
 
 type ServiceHariKerja interface {
 	HitungHariKerja(bulan, tahun int) (int, error)
+	GetHariLibur() ([]dto.HariLiburResponse, error)
+	DeleteHariLibur(id int) (dto.HariLiburResponse, error)
+	CreateHariLibur(hl dto.CreateHariLiburRequest) (dto.HariLiburResponse, error)
 }
 
 type serviceHariKerja struct {
@@ -54,4 +60,49 @@ func (s *serviceHariKerja) HitungHariKerja(bulan, tahun int) (int, error) {
 	}
 
 	return total, nil
+}
+
+func (s *serviceHariKerja) GetHariLibur() ([]dto.HariLiburResponse, error) {
+	hariLibur, err := s.repo.GetHariLibur()
+	if err != nil {
+		return []dto.HariLiburResponse{}, err
+	}
+
+	// convert model to dto
+	hariLiburDTO := helper.ConvertToDTOHariLiburPlural(hariLibur)
+	return hariLiburDTO, nil
+}
+
+func (s *serviceHariKerja) DeleteHariLibur(id int) (dto.HariLiburResponse, error) {
+	hariLibur, err := s.repo.DeleteHariLibur(id)
+	if err != nil {
+		return dto.HariLiburResponse{}, err
+	}
+
+	// convert model to dto
+	hariLiburDTO := helper.ConvertToDTOHariLiburSingle(hariLibur)
+	return hariLiburDTO, nil
+}
+
+func (s *serviceHariKerja) CreateHariLibur(hl dto.CreateHariLiburRequest) (dto.HariLiburResponse, error) {
+	// parsing string ke format time
+	tgl, err := time.Parse("2006-01-02", hl.Tanggal) // tanggal di dto request bertipe string
+	if err != nil {                                  // jika parsing date gagal
+		return dto.HariLiburResponse{}, err
+	}
+
+	// convert dto to model
+	req := model.HariLibur{
+		Tanggal:    tgl, // tanggal yang sudah di convert (bertipe time.Time)
+		Keterangan: hl.Keterangan,
+	}
+
+	hariLibur, err := s.repo.CreateHariLibur(req)
+	if err != nil {
+		return dto.HariLiburResponse{}, err
+	}
+
+	// convert back to dto
+	hariLiburDTO := helper.ConvertToDTOHariLiburSingle(hariLibur)
+	return hariLiburDTO, nil
 }

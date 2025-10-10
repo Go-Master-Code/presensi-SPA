@@ -109,7 +109,8 @@ func ConvertToDTOPresensiSingle(presensi model.Presensi) dto.PresensiResponse {
 func ConvertToDTOHariLiburSingle(hariLibur model.HariLibur) dto.HariLiburResponse {
 	var hariLiburDTO dto.HariLiburResponse
 	hariLiburDTO.ID = hariLibur.ID
-	hariLiburDTO.Tanggal = hariLibur.Tanggal
+	hariLiburDTO.Tanggal = hariLibur.Tanggal.Format("2006-01-02")
+	hariLiburDTO.Hari = hariLibur.Tanggal.Weekday().String()
 	hariLiburDTO.Keterangan = hariLibur.Keterangan
 	return hariLiburDTO
 }
@@ -119,7 +120,8 @@ func ConvertToDTOHariLiburPlural(hariLibur []model.HariLibur) []dto.HariLiburRes
 	for _, h := range hariLibur {
 		hariLiburDTO = append(hariLiburDTO, dto.HariLiburResponse{
 			ID:         h.ID,
-			Tanggal:    h.Tanggal,
+			Tanggal:    h.Tanggal.Format("2006-01-02"), // parsing format tanggal,
+			Hari:       h.Tanggal.Weekday().String(),
 			Keterangan: h.Keterangan,
 		})
 	}
