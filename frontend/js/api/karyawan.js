@@ -191,26 +191,6 @@ function showModalAlertKaryawan(message, type = 'danger', duration = 7000) {
     }, duration);
 }
 
-// function append data karyawan yang baru di add ke db ke dalam tabel
-function appendKaryawan(karyawan) {
-    const aktif = karyawan.aktif ? 'Ya' : 'Tidak'; // true=Ya, false=Tidak
-
-    // tambahkan elemen button edit dan hapus
-    const aksiButtons = `
-        <button class="btn btn-sm btn-info btn-edit" onclick='openModalEditKaryawan(${JSON.stringify(karyawan)})'><i class="fas fa-edit"></i> Edit</button>
-        <button class="btn btn-sm btn-danger btn-delete" onClick="showModalDeleteKaryawan('${karyawan.id}')" data-id="${karyawan.id}"><i class="fas fa-trash-alt"></i> Delete</button>
-    `;
-
-    // jangan pakai elemen tr dan td lagi
-    dataTableKaryawan.row.add([
-        karyawan.id,
-        karyawan.nama,
-        karyawan.jenjang,
-        aktif,
-        aksiButtons // -> kolom ke 5 yang berisi aksi edit dan delete
-    ]).draw(false);
-}
-
 // event listener submit form add karyawan
 $(document).on('click', '#button-submit-karyawan', async function(e) {
     e.preventDefault();

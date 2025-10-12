@@ -54,6 +54,15 @@ func main() {
 	r.PUT("/api/jenis_ijin/:id", handlerJenisIjin.UpdateJenisIjin)
 	r.PUT("/api/jenis_ijin/update", handlerJenisIjin.UpdateJenisIjinAktif)
 
+	// dependency injection ijin karyawan
+	repoIjin := repository.NewRepositoryIjinKaryawan(database.DB)
+	serviceIjin := service.NewServiceIjinKaryawan(repoIjin)
+	handlerIjin := handler.NewHandlerIjinKaryawan(serviceIjin)
+
+	r.GET("api/ijin", handlerIjin.GetAllIjinKaryawan)
+	r.POST("api/ijin", handlerIjin.CreateIjinKaryawan)
+	r.PUT("api/ijin/:id", handlerIjin.UpdateIjinKaryawan)
+
 	// dependency injection presensi
 	repoPresensi := repository.NewRepositoryPresensi(database.DB)
 	servicePresensi := service.NewServicePresensi(repoPresensi)

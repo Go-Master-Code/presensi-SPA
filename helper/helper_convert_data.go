@@ -138,3 +138,33 @@ func ConvertToDTOJenjangPlural(jenjang []model.Jenjang) []dto.JenjangResponse {
 	}
 	return jenjangDTO
 }
+
+func ConvertToDTOIjinKaryawanPlural(ijinKaryawan []model.IjinKaryawan) []dto.IjinKaryawanResponse {
+	var ijinKaryawanDTO []dto.IjinKaryawanResponse
+	for _, i := range ijinKaryawan {
+		ijinKaryawanDTO = append(ijinKaryawanDTO, dto.IjinKaryawanResponse{
+			ID:            i.ID,
+			Tanggal:       i.Tanggal.Format("2006-01-02"), // parsing format tanggal
+			KaryawanID:    i.KaryawanID,
+			KaryawanNama:  i.Karyawan.Nama,
+			JenisIjinID:   i.JenisIjinID,
+			JenisIjinKode: i.JenisIjin.Kode,
+			JenisIjinNama: i.JenisIjin.Nama,
+			Keterangan:    i.Keterangan,
+		})
+	}
+	return ijinKaryawanDTO
+}
+
+func ConvertToDTOIjinKaryawanSingle(ijin model.IjinKaryawan) dto.IjinKaryawanResponse {
+	var ijinDTO dto.IjinKaryawanResponse
+	ijinDTO.ID = ijin.ID
+	ijinDTO.Tanggal = ijin.Tanggal.Format("2006-01-02")
+	ijinDTO.KaryawanID = ijin.KaryawanID
+	ijinDTO.KaryawanNama = ijin.Karyawan.Nama
+	ijinDTO.JenisIjinID = ijin.JenisIjinID
+	ijinDTO.JenisIjinKode = ijin.JenisIjin.Kode
+	ijinDTO.JenisIjinNama = ijin.JenisIjin.Nama
+	ijinDTO.Keterangan = ijin.Keterangan
+	return ijinDTO
+}

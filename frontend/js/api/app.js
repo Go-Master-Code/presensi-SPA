@@ -2,6 +2,7 @@ const routes = {
     '/': 'pages/karyawan.html',       // halaman default
     '/karyawan': 'pages/karyawan.html',
     '/jenis_ijin': 'pages/jenis_ijin.html',
+    '/ijin': 'pages/ijin_karyawan.html',
     '/presensi': 'pages/presensi.html',
     '/hari_libur': 'pages/hari_libur.html',
     '/test': '/pages/test.html'
@@ -43,6 +44,8 @@ function loadRoute() {
             renderHariLibur();
         } else if (path === '/jenis_ijin') {
             renderJenisIjin();
+        } else if (path === '/ijin') {
+            renderIjinKaryawan();
         } else if (path === '/presensi') {
             renderPresensi();
         }
