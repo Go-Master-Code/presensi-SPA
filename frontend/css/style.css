@@ -1,22 +1,12 @@
 body {
   font-family: Arial, sans-serif;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
 }
-
-.btn {
-  padding: 0.5rem 1rem;
-  background-color: teal;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+nav {
+  padding: 10px;
+  background-color: #f8f9fa;
 }
-
-.btn:hover {
-  background-color: darkslategray;
-}
-
-thead th {
-  background-color: #343a40; /* Contoh: abu gelap */
-  color: white;
+nav a {
+  margin-right: 10px;
 }

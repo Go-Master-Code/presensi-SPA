@@ -72,3 +72,30 @@ func (h *handlerJenisIjin) UpdateJenisIjinAktif(c *gin.Context) {
 
 	helper.StatusSuksesUpdateData(c, updateJenisIjinDTO)
 }
+
+func (h *handlerJenisIjin) UpdateJenisIjin(c *gin.Context) {
+	// baca request body
+	var jenisLibur dto.UpdateJenisIjinRequest
+	err := c.ShouldBindJSON(&jenisLibur)
+
+	if err != nil {
+		helper.ErrorParsingRequestBody(c, err)
+		return
+	}
+
+	// ambil param id
+	id := c.Param("id")
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		helper.ErrorParsingAtoi(c, err)
+		return
+	}
+
+	jenisIjinDTO, err := h.service.UpdateJenisIjin(idInt, jenisLibur)
+	if err != nil {
+		helper.ErrorUpdateData(c, err)
+		return
+	}
+
+	helper.StatusSuksesUpdateData(c, jenisIjinDTO)
+}

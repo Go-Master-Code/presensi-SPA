@@ -5,6 +5,7 @@ import (
 	"api-presensi/internal/dto"
 	"api-presensi/internal/model"
 	"api-presensi/internal/repository"
+	"errors"
 	"time"
 )
 
@@ -13,6 +14,7 @@ type ServiceHariKerja interface {
 	GetHariLibur() ([]dto.HariLiburResponse, error)
 	DeleteHariLibur(id int) (dto.HariLiburResponse, error)
 	CreateHariLibur(hl dto.CreateHariLiburRequest) (dto.HariLiburResponse, error)
+	UpdateHariLibur(id int, req dto.UpdateHariLiburRequest) (dto.HariLiburResponse, error)
 }
 
 type serviceHariKerja struct {
@@ -91,6 +93,16 @@ func (s *serviceHariKerja) CreateHariLibur(hl dto.CreateHariLiburRequest) (dto.H
 		return dto.HariLiburResponse{}, err
 	}
 
+	// cek apa tanggal hari libur sudah ada
+	exist, err := s.repo.ExistsByDate(hl.Tanggal)
+	if err != nil {
+		return dto.HariLiburResponse{}, err
+	}
+
+	if exist {
+		return dto.HariLiburResponse{}, errors.New("data hari libur sudah ada")
+	}
+
 	// convert dto to model
 	req := model.HariLibur{
 		Tanggal:    tgl, // tanggal yang sudah di convert (bertipe time.Time)
@@ -104,5 +116,25 @@ func (s *serviceHariKerja) CreateHariLibur(hl dto.CreateHariLiburRequest) (dto.H
 
 	// convert back to dto
 	hariLiburDTO := helper.ConvertToDTOHariLiburSingle(hariLibur)
+	return hariLiburDTO, nil
+}
+
+func (s *serviceHariKerja) UpdateHariLibur(id int, req dto.UpdateHariLiburRequest) (dto.HariLiburResponse, error) {
+	var updateMap = map[string]any{}
+
+	if req.Tanggal != nil {
+		updateMap["tanggal"] = *req.Tanggal
+	}
+	if req.Keterangan != nil {
+		updateMap["keterangan"] = *req.Keterangan
+	}
+
+	updatedHariLibur, err := s.repo.UpdateHariLibur(id, updateMap)
+	if err != nil {
+		return dto.HariLiburResponse{}, err
+	}
+
+	// convert model to dto
+	hariLiburDTO := helper.ConvertToDTOHariLiburSingle(updatedHariLibur)
 	return hariLiburDTO, nil
 }

@@ -6,6 +6,11 @@ type CreateHariLiburRequest struct {
 	Keterangan string `json:"keterangan" binding:"required"`
 }
 
+type UpdateHariLiburRequest struct {
+	Tanggal    *string `json:"tanggal" binding:"omitempty"`
+	Keterangan *string `json:"keterangan" binding:"omitempty"`
+}
+
 type HariLiburResponse struct {
 	ID         int    `json:"id"`
 	Tanggal    string `json:"tanggal"`

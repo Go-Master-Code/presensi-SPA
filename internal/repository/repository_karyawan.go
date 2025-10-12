@@ -11,6 +11,7 @@ type RepositoryKaryawan interface {
 	GetKaryawanByID(id string) (model.Karyawan, error)
 	DeleteKaryawanByID(id string) (model.Karyawan, error)
 	CreateKaryawan(karyawan model.Karyawan) (model.Karyawan, error)
+	ExistsByID(id string) bool
 	UpdateKaryawan(id string, updateMap map[string]any) (model.Karyawan, error)
 }
 
@@ -65,6 +66,13 @@ func (r *repositoryKaryawan) CreateKaryawan(karyawan model.Karyawan) (model.Kary
 	}
 
 	return karyawan, nil
+}
+
+func (r *repositoryKaryawan) ExistsByID(id string) bool {
+	var karyawan model.Karyawan
+	var count int64
+	r.db.Where("ID = ?", id).First(&karyawan).Count(&count)
+	return count > 0
 }
 
 func (r *repositoryKaryawan) UpdateKaryawan(id string, updateMap map[string]interface{}) (model.Karyawan, error) {

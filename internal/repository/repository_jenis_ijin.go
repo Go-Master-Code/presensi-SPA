@@ -9,6 +9,7 @@ import (
 type RepositoryJenisIjin interface {
 	GetAllJenisIjin() ([]model.JenisIjin, error)
 	CreateJenisIjin(jenisIjin model.JenisIjin) (model.JenisIjin, error)
+	UpdateJenisIjin(id int, updateMap map[string]any) (model.JenisIjin, error)
 	UpdateJenisIjinAktif(id int, aktif bool) (model.JenisIjin, error)
 }
 
@@ -33,6 +34,24 @@ func (r *repositoryJenisIjin) CreateJenisIjin(jenisIjin model.JenisIjin) (model.
 	err := r.db.Create(&jenisIjin).Error
 	return jenisIjin, err
 	// tidak perlu find data lagi karena model = dto
+}
+
+func (r *repositoryJenisIjin) UpdateJenisIjin(id int, updateMap map[string]any) (model.JenisIjin, error) {
+	// find data dulu
+	var jenisIjin model.JenisIjin
+	err := r.db.First(&jenisIjin, id).Error
+	if err != nil {
+		return model.JenisIjin{}, err
+	}
+
+	// update data
+	err = r.db.Model(&jenisIjin).Updates(updateMap).Error
+	if err != nil {
+		return model.JenisIjin{}, err
+	}
+
+	return jenisIjin, nil
+
 }
 
 func (r *repositoryJenisIjin) UpdateJenisIjinAktif(id int, aktif bool) (model.JenisIjin, error) {

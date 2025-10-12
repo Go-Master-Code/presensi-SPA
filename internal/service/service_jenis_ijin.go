@@ -10,6 +10,7 @@ import (
 type ServiceJenisIjin interface {
 	GetAllJenisIjin() ([]dto.JenisIjinResponse, error)
 	CreateJenisIjin(jenisIjin dto.CreateJenisIjinRequest) (dto.JenisIjinResponse, error)
+	UpdateJenisIjin(id int, req dto.UpdateJenisIjinRequest) (dto.JenisIjinResponse, error)
 	UpdateJenisIjinAktif(id int, aktif bool) (dto.JenisIjinResponse, error)
 }
 
@@ -50,6 +51,30 @@ func (s *serviceJenisIjin) CreateJenisIjin(jenisIjin dto.CreateJenisIjinRequest)
 	// convert model to dto
 	newJenisIjinDTO := helper.ConvertToDTOJenisIjinSingle(newJenisIjin)
 	return newJenisIjinDTO, nil
+}
+
+func (s *serviceJenisIjin) UpdateJenisIjin(id int, req dto.UpdateJenisIjinRequest) (dto.JenisIjinResponse, error) {
+	// inisiasi map
+	var updateMap = map[string]any{}
+	if req.Kode != nil {
+		updateMap["kode"] = req.Kode
+	}
+	if req.Nama != nil {
+		updateMap["nama"] = req.Nama
+	}
+	if req.Aktif != nil {
+		updateMap["aktif"] = req.Aktif
+	}
+
+	updatedJenisIjin, err := s.repo.UpdateJenisIjin(id, updateMap)
+	if err != nil {
+		return dto.JenisIjinResponse{}, err
+	}
+
+	// convert model to dto
+	jenisIjinDTO := helper.ConvertToDTOJenisIjinSingle(updatedJenisIjin)
+
+	return jenisIjinDTO, nil
 }
 
 func (s *serviceJenisIjin) UpdateJenisIjinAktif(id int, aktif bool) (dto.JenisIjinResponse, error) {

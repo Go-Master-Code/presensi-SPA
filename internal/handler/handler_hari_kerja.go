@@ -88,3 +88,29 @@ func (h *handlerHariKerja) CreateHariLibur(c *gin.Context) {
 	// jika service sukses, beri response
 	helper.StatusSuksesCreateData(c, hariLibur)
 }
+
+func (h *handlerHariKerja) UpdateHariLibur(c *gin.Context) {
+	// ambil request body
+	var hariLibur dto.UpdateHariLiburRequest
+	err := c.ShouldBindJSON(&hariLibur)
+	if err != nil {
+		helper.ErrorParsingRequestBody(c, err)
+		return
+	}
+
+	// ambil param id untuk update
+	id := c.Param("id")
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		helper.ErrorParsingAtoi(c, err)
+		return
+	}
+
+	hariLiburDTO, err := h.service.UpdateHariLibur(idInt, hariLibur)
+	if err != nil {
+		helper.ErrorUpdateData(c, err)
+		return
+	}
+
+	helper.StatusSuksesUpdateData(c, hariLiburDTO)
+}

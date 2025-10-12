@@ -51,6 +51,7 @@ func main() {
 	// list handler user
 	r.GET("/api/jenis_ijin", handlerJenisIjin.GetAllJenisIjin)
 	r.POST("/api/jenis_ijin", handlerJenisIjin.CreateJenisIjin)
+	r.PUT("/api/jenis_ijin/:id", handlerJenisIjin.UpdateJenisIjin)
 	r.PUT("/api/jenis_ijin/update", handlerJenisIjin.UpdateJenisIjinAktif)
 
 	// dependency injection presensi
@@ -78,6 +79,7 @@ func main() {
 	r.GET("/api/hari_libur", handlerHariKerja.GetHariLibur)
 	r.DELETE("/api/hari_libur/:id", handlerHariKerja.DeleteHariLibur)
 	r.POST("/api/hari_libur", handlerHariKerja.CreateHariLibur)
+	r.PUT("/api/hari_libur/:id", handlerHariKerja.UpdateHariLibur)
 
 	// dependency injection report
 	serviceReport := service.NewServiceReport(repoHariKerja, repoPresensi)
@@ -97,16 +99,22 @@ func main() {
 	r.Static("/css", "./frontend/css")
 	r.Static("/js", "./frontend/js")
 	r.Static("/assets", "./frontend/assets")
+	r.Static("/pages", "./frontend/pages")
 
+	// Semua route frontend diarahkan ke index.html
 	r.GET("/", func(c *gin.Context) {
-		c.File("./frontend/pages/dashboard.html")
+		c.File("./frontend/index.html")
 	})
-	r.GET("/karyawan", func(c *gin.Context) {
-		c.File("./frontend/pages/karyawan.html")
+
+	r.NoRoute(func(c *gin.Context) {
+		c.File("./frontend/index.html")
 	})
-	r.GET("/presensi", func(c *gin.Context) {
-		c.File("./frontend/pages/presensi.html")
-	})
+	// r.GET("/karyawan", func(c *gin.Context) {
+	// 	c.File("./frontend/pages/karyawan.html")
+	// })
+	// r.GET("/presensi", func(c *gin.Context) {
+	// 	c.File("./frontend/pages/presensi.html")
+	// })
 
 	// run server
 	r.Run("localhost:8080")

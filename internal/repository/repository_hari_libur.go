@@ -12,6 +12,8 @@ type RepositoryHariLibur interface {
 	GetHariKerjaPerBulan(start, end time.Time) ([]model.HariLibur, error)
 	DeleteHariLibur(id int) (model.HariLibur, error)
 	CreateHariLibur(hl model.HariLibur) (model.HariLibur, error)
+	ExistsByDate(tanggal string) (bool, error)
+	UpdateHariLibur(id int, updateMap map[string]any) (model.HariLibur, error)
 }
 
 type repositoryHariLibur struct {
@@ -53,4 +55,26 @@ func (r *repositoryHariLibur) DeleteHariLibur(id int) (model.HariLibur, error) {
 func (r *repositoryHariLibur) CreateHariLibur(newData model.HariLibur) (model.HariLibur, error) {
 	err := r.db.Create(&newData).Error
 	return newData, err
+}
+
+func (r *repositoryHariLibur) ExistsByDate(tanggal string) (bool, error) {
+	var hariLibur model.HariLibur
+	var count int64
+	err := r.db.Where("tanggal = ?", tanggal).First(&hariLibur).Count(&count).Error
+	return count > 0, err
+}
+
+func (r *repositoryHariLibur) UpdateHariLibur(id int, updateMap map[string]any) (model.HariLibur, error) {
+	var hariLibur model.HariLibur
+	err := r.db.First(&hariLibur, id).Error
+	if err != nil {
+		return model.HariLibur{}, err
+	}
+
+	err = r.db.Model(&hariLibur).Updates(updateMap).Error
+	if err != nil {
+		return model.HariLibur{}, err
+	}
+
+	return hariLibur, nil
 }

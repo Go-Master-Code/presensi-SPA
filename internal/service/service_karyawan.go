@@ -5,6 +5,7 @@ import (
 	"api-presensi/internal/dto"
 	"api-presensi/internal/model"
 	"api-presensi/internal/repository"
+	"errors"
 )
 
 type ServiceKaryawan interface {
@@ -59,6 +60,14 @@ func (s *serviceKaryawan) DeleteKaryawanByID(id string) (dto.KaryawanResponse, e
 }
 
 func (s *serviceKaryawan) CreateKaryawan(karyawan dto.CreateKaryawanRequest) (dto.KaryawanResponse, error) {
+	// cek apakah karyawan sudah ada
+	exist := s.repo.ExistsByID(karyawan.ID)
+
+	// cek apakah exist = true
+	if exist {
+		return dto.KaryawanResponse{}, errors.New("ID karyawan sudah ada")
+	}
+
 	req := model.Karyawan{
 		ID:        karyawan.ID,
 		Nama:      karyawan.Nama,
