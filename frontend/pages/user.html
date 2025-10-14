@@ -1,0 +1,198 @@
+<div>
+    <!-- header -->
+    <!-- ✅ Alert sukses hapus data -->
+    <div id="alert-container-user"></div>
+
+    <header class="d-flex align-items-center justify-content-between mb-3">
+        <h1>Data User</h1>
+        <button type="button" id="button-tambah-user" class="btn btn-dark" data-toggle="modal" data-target="#modal-user">
+            Tambah User
+        </button>
+    </header>
+
+    <!-- table -->
+    <div class="table-responsive">
+        <table id="table-user" class="table table-striped table-bordered table-hover">
+            <!-- <caption>List of users</caption> -->
+            <thead class="thead-light">
+                <tr>
+                    <th style="text-align: center;" scope="col">ID</th>
+                    <th scope="col">Email</th>
+                    <th style="text-align: center;" scope="col">Username</th>
+                    <th style="text-align: center;" scope="col">Role</th>
+                    <th style="text-align: center;" scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="user-body">
+                <!-- data diisi dari user.js -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- modal -->
+    <div class="container-fluid my-4">
+            <div class="modal fade" id="modal-user" tabindex="-1" role="dialog" aria-labelledby="modal-user" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-user-label">Data User Baru</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- modal alert untuk sukses/gagal tambah data -->
+                            <div id="modal-alert-user" class="w-100 mb-3"></div>
+
+                            <form id="form-user" autocomplete="off">
+                                <div class="form-group row">
+                                    <label for="email-user" class="col-form-label col-md-4">
+                                        Email:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="email" class="form-control" id="email-user" name="email-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="username-user" class="col-form-label col-md-4">
+                                        Username:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="username-user" name="username-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password-user" class="col-form-label col-md-4">
+                                        Password:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="password-user" name="password-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="confirm-password-user" class="col-form-label col-md-4">
+                                        Retype Password:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="confirm-password-user" name="confirm-password-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="role-user" class="col-form-label col-md-4">
+                                        Role:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select class="custom-select" id="role-user" name="role-user" required>
+                                            <option selected disabled value="">Pilih Role</option>
+                                            <!-- option diisi dari js di halaman ini -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" id="button-submit-user" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Konfirmasi Hapus -->
+            <div class="modal fade" id="modal-delete-user" tabindex="-1" role="dialog" aria-labelledby="modal-delete-user-Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-delete-user-Label">Konfirmasi Hapus</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus user dengan ID: <span id="deleteIdUserText" class="font-weight-bold"></span>?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="button" id="button-delete-user" class="btn btn-danger">Hapus</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal edit data user -->
+            <div class="modal fade" id="modal-edit-user" tabindex="-1" role="dialog" aria-labelledby="modal-edit-user-Label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-edit-user-Label">Edit Data user</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                             <!-- modal alert untuk sukses/gagal update data -->
+                            <div id="modal-alert-edit-user" class="w-100 mb-3"></div>
+
+                            <form id="form-edit-user" autocomplete="off">
+                                <div class="form-group row">
+                                    <label for="edit-id-user" class="col-form-label col-md-4">
+                                        Email:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="edit-id-user" name="edit-id-user" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit-email-user" class="col-form-label col-md-4">
+                                        Email:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="edit-email-user" name="edit-email-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit-username-user" class="col-form-label col-md-4">
+                                        Username:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="edit-username-user" name="edit-username-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit-password-user" class="col-form-label col-md-4">
+                                        New Password:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="edit-password-user" name="edit-password-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit-confirm-password-user" class="col-form-label col-md-4">
+                                        Retype Password:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="edit-confirm-password-user" name="edit-confirm-password-user" maxlength="50" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit-role-user" class="col-form-label col-md-4">
+                                        Role:<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select class="custom-select" id="edit-role-user" name="edit-role-user" required>
+                                            <option selected disabled value="">Pilih Role</option>
+                                            <!-- option diisi dari js di halaman ini -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" id="button-update-user" class="btn btn-primary">Update Data</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

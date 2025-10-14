@@ -172,6 +172,11 @@ $(document).on('hidden.bs.modal', '#modal-karyawan', function() {
     $('#button-tambah-karyawan').trigger('focus');
 });
 
+// pindahkan fokus input ID saat modal tambah karyawan dibuka
+$(document).on('shown.bs.modal', '#modal-karyawan', function() {
+    $('#id').trigger('focus');
+});
+
 function showModalAlertKaryawan(message, type = 'danger', duration = 7000) {
     const alertContainer = document.getElementById('modal-alert-karyawan');
     const alert = document.createElement('div');
@@ -192,7 +197,7 @@ function showModalAlertKaryawan(message, type = 'danger', duration = 7000) {
 }
 
 // event listener submit form add karyawan
-$(document).on('click', '#button-submit-karyawan', async function(e) {
+$(document).on('submit', '#form-karyawan', async function(e) {
     e.preventDefault();
 
     // 1. tangkap input dari textbox
@@ -353,7 +358,7 @@ function openModalEditKaryawan(karyawan) {
 }
 
 // event listener submit form update karyawan
-$(document).on('click', '#button-update-karyawan', function(e) {
+$(document).on('submit', '#form-edit-karyawan', function(e) {
     e.preventDefault(); // agar tidak auto submit
 
     // 1. tangkap input dari textbox

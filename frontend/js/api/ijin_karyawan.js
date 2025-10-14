@@ -170,10 +170,14 @@ $(document).on('hide.bs.modal', '#modal-edit-ijin-karyawan', function() {
     }
 });
 
-
 // pindahkan fokus ke tombol tambah karyawan
 $(document).on('hidden.bs.modal', '#modal-ijin-karyawan', function() {
     $('#button-tambah-ijin-karyawan').trigger('focus');
+});
+
+// pindahkan fokus input tanggal ijin saat modal tambah dibuka
+$(document).on('shown.bs.modal', '#modal-ijin-karyawan', function() {
+    $('#tanggal-ijin').trigger('focus');
 });
 
 function showModalAlertIjinKaryawan(message, type = 'danger', duration = 7000) {
@@ -196,7 +200,7 @@ function showModalAlertIjinKaryawan(message, type = 'danger', duration = 7000) {
 }
 
 // event listener submit form add ijin karyawan
-$(document).on('click', '#button-submit-ijin-karyawan', async function(e) {
+$(document).on('submit', '#form-ijin-karyawan', async function(e) {
     e.preventDefault();
 
     // 1. tangkap input dari textbox
@@ -280,7 +284,7 @@ function openModalEditIjin(ijin) {
 }
 
 // event listener submit form update ijin karyawan
-$(document).on('click', '#button-update-ijin-karyawan', function(e) {
+$(document).on('submit', '#form-edit-ijin-karyawan', function(e) {
     e.preventDefault(); // agar tidak auto submit
 
     // 1. tangkap input dari textbox

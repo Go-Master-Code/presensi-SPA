@@ -5,6 +5,7 @@ const routes = {
     '/ijin': 'pages/ijin_karyawan.html',
     '/presensi': 'pages/presensi.html',
     '/hari_libur': 'pages/hari_libur.html',
+    '/user': 'pages/user.html',
     '/test': '/pages/test.html'
 };
 
@@ -46,6 +47,8 @@ function loadRoute() {
             renderJenisIjin();
         } else if (path === '/ijin') {
             renderIjinKaryawan();
+        } else if (path === '/user') {
+            renderUser();
         } else if (path === '/presensi') {
             renderPresensi();
         }

@@ -131,10 +131,14 @@ $(document).on('hide.bs.modal', '#modal-edit-jenis-ijin', function() {
     }
 });
 
-
-// pindahkan fokus ke tombol tambah karyawan
+// pindahkan fokus ke tombol tambah jenis ijin
 $(document).on('hidden.bs.modal', '#modal-jenis-ijin', function() {
     $('#button-tambah-jenis-ijin').trigger('focus');
+});
+
+// pindahkan fokus input jenis ijin saat modal tambah jenis ijin dibuka
+$(document).on('shown.bs.modal', '#modal-jenis-ijin', function() {
+    $('#jenis-ijin').trigger('focus');
 });
 
 function showModalAlertJenisIjin(message, type = 'danger', duration = 7000) {
@@ -156,7 +160,7 @@ function showModalAlertJenisIjin(message, type = 'danger', duration = 7000) {
     }, duration);
 }
 
-$(document).on('click', '#button-submit-jenis-ijin', async function(e) {
+$(document).on('submit', '#form-jenis-ijin', async function(e) {
     e.preventDefault();
 
     const jenisIjin = document.getElementById("jenis-ijin").value; 
@@ -292,7 +296,7 @@ function openModalEditJenisIjin(ji) {
 }
 
 // event listener submit form update hari libur
-$(document).on('click', '#button-update-jenis-ijin', function(e) {
+$(document).on('submit', '#form-edit-jenis-ijin', function(e) {
     e.preventDefault(); // agar tidak auto submit
 
     // 1. tangkap input dari textbox

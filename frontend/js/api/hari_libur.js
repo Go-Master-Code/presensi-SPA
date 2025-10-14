@@ -132,10 +132,14 @@ $(document).on('hide.bs.modal', '#modal-edit-hari-libur', function() {
     }
 });
 
-
 // pindahkan fokus ke tombol tambah karyawan
 $(document).on('hidden.bs.modal', '#modal-hari-libur', function() {
     $('#button-tambah-hari-libur').trigger('focus');
+});
+
+// pindahkan fokus input tanggal ijin saat modal tambah dibuka
+$(document).on('shown.bs.modal', '#modal-hari-libur', function() {
+    $('#hari-libur').trigger('focus');
 });
 
 function showModalAlertHariLibur(message, type = 'danger', duration = 7000) {
@@ -157,7 +161,7 @@ function showModalAlertHariLibur(message, type = 'danger', duration = 7000) {
     }, duration);
 }
 
-$(document).on('click', '#button-submit-hari-libur', async function(e) {
+$(document).on('submit', '#form-hari-libur', async function(e) {
     e.preventDefault();
 
     const tanggal = document.getElementById("hari-libur").value; 
@@ -314,7 +318,7 @@ function openModalEditHariLibur(hl) {
 }
 
 // event listener submit form update hari libur
-$(document).on('click', '#button-update-hari-libur', function(e) {
+$(document).on('submit', '#form-edit-hari-libur', function(e) {
     e.preventDefault(); // agar tidak auto submit
 
     // 1. tangkap input dari textbox

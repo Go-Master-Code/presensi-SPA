@@ -168,3 +168,23 @@ func ConvertToDTOIjinKaryawanSingle(ijin model.IjinKaryawan) dto.IjinKaryawanRes
 	ijinDTO.Keterangan = ijin.Keterangan
 	return ijinDTO
 }
+
+func ConvertToDTORoleSingle(role model.Role) dto.RoleResponse {
+	var roleDTO dto.RoleResponse
+	roleDTO.ID = role.ID
+	roleDTO.Nama = role.Nama
+	roleDTO.Deskripsi = role.Deskripsi
+	return roleDTO
+}
+
+func ConvertToDTORolePlural(roles []model.Role) []dto.RoleResponse {
+	var rolesDTO []dto.RoleResponse
+	for _, r := range roles {
+		rolesDTO = append(rolesDTO, dto.RoleResponse{
+			ID:        r.ID,
+			Nama:      r.Nama,
+			Deskripsi: r.Deskripsi,
+		})
+	}
+	return rolesDTO
+}

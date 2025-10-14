@@ -104,6 +104,14 @@ func main() {
 	// list handler jenjang
 	r.GET("/api/jenjang", handlerJenjang.GetAllJenjang)
 
+	// dependency injection role
+	repoRole := repository.NewRepositoryRole(database.DB)
+	serviceRole := service.NewServiceRole(repoRole)
+	handlerRole := handler.NewHandlerRole(serviceRole)
+
+	// list handler role
+	r.GET("/api/role", handlerRole.GetAllRole)
+
 	// handler untuk frontend
 	r.Static("/css", "./frontend/css")
 	r.Static("/js", "./frontend/js")
