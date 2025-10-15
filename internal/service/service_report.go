@@ -3,6 +3,7 @@ package service
 import (
 	"api-presensi/internal/model"
 	"api-presensi/internal/repository"
+	"log"
 	"time"
 )
 
@@ -61,6 +62,57 @@ func (s *ServiceReport) GenerateReportKehadiran(bulan, tahun int) (*model.Kehadi
 		return &model.KehadiranReport{}, err
 	}
 
+	return &model.KehadiranReport{
+		HariKerja: total,
+		Data:      dataKehadiran,
+	}, nil
+}
+
+func (s *ServiceReport) GenerateReportPresensiPerPeriode(awal, akhir string) (*model.KehadiranReport, error) {
+	log.Println("Masuk method cari jumlah hari kerja")
+	tglAwal, err := time.Parse("2006-01-02", awal) // parsing tanggal awal
+	if err != nil {                                // jika parsing date gagal
+		return &model.KehadiranReport{}, err
+	}
+
+	tglAkhir, err := time.Parse("2006-01-02", akhir) // parsing tanggal akhir
+	if err != nil {                                  // jika parsing date gagal
+		return &model.KehadiranReport{}, err
+	}
+
+	// ambil hari kerja per bulan
+	hariLibur, err := s.RepoHariLibur.GetHariKerjaPerBulan(tglAwal, tglAkhir)
+	if err != nil {
+		return &model.KehadiranReport{}, err
+	}
+
+	liburMap := make(map[string]bool)
+	for _, h := range hariLibur {
+		// iterasi hariLibur, masukkan ke dalam map (key=tanggal, value=true)
+		liburMap[h.Tanggal.Format("2006-01-02")] = true
+	}
+
+	// Hitung hari kerja (Senin-Jumat, dan bukan hari libur)
+	total := 0
+	for d := tglAwal; !d.After(tglAkhir); d = d.AddDate(0, 0, 1) {
+		// d = tgl awal, d <= end, d+=1
+		weekday := d.Weekday()
+		if weekday >= time.Monday && weekday <= time.Friday { // hari kerja hanya senin-jumat
+			if !liburMap[d.Format("2006-01-02")] { // kalau value tanggal di map == false
+				// tambah jumlah hari kerja
+				total++
+			}
+		}
+	}
+
+	// ambil data presensi karyawan per bulan
+	dataKehadiran, err := s.RepoPresensi.GetPresensiAllPerPeriode(awal, akhir)
+
+	if err != nil {
+		return &model.KehadiranReport{}, err
+	}
+
+	log.Println("Jumlah hari kerja: ", total)
 	return &model.KehadiranReport{
 		HariKerja: total,
 		Data:      dataKehadiran,

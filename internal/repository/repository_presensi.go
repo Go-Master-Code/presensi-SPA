@@ -16,8 +16,9 @@ type RepositoryPresensi interface {
 	GetPresensiHarian(tanggal string) ([]model.Presensi, error)
 	CreatePresensi(presensi model.Presensi) (model.Presensi, error)
 	CheckPresensiMasuk(id string, tanggal string) (model.Presensi, error)
-	UpdateWaktuPulang(id string, tanggal string, waktuPulang string) (model.Presensi, error)
-	GetPresensiAllPerBulan(bulan int, tahun int) ([]dto.KehadiranResult, error) // untuk report presensi semua karyawan per bulan
+	UpdateWaktuPulang(id string, tanggal string, waktuPulang string, keterangan string) (model.Presensi, error)
+	GetPresensiAllPerBulan(bulan int, tahun int) ([]dto.KehadiranResult, error)        // untuk report presensi semua karyawan per bulan
+	GetPresensiAllPerPeriode(awal string, akhir string) ([]dto.KehadiranResult, error) // untuk report presensi semua karyawan per periode
 }
 
 type repositoryPresensi struct {
@@ -79,7 +80,7 @@ func (r *repositoryPresensi) CheckPresensiMasuk(id string, tanggal string) (mode
 	return presensi, err
 }
 
-func (r *repositoryPresensi) UpdateWaktuPulang(id string, tanggal string, waktuPulang string) (model.Presensi, error) {
+func (r *repositoryPresensi) UpdateWaktuPulang(id string, tanggal string, waktuPulang string, keterangan string) (model.Presensi, error) {
 	// cari dulu recordnya
 	var presensi model.Presensi
 	err := r.db.Where("karyawan_id = ? and tanggal = ?", id, tanggal).First(&presensi).Error
@@ -87,7 +88,17 @@ func (r *repositoryPresensi) UpdateWaktuPulang(id string, tanggal string, waktuP
 		return model.Presensi{}, err
 	}
 
-	err = r.db.Model(&presensi).Update("waktu_pulang", waktuPulang).Error
+	// untuk menghindari relasi tabel, kosongkan data struct karyawan yang terhubung dengan struct presensi ini
+	presensi.Karyawan = model.Karyawan{}
+
+	// ubah isi var presensi
+	presensi.WaktuPulang = waktuPulang
+	presensi.Keterangan = keterangan
+
+	// err = r.db.Model(&presensi).Update("waktu_pulang", waktuPulang).Error
+
+	// Update 2 field waktu_pulang dan keterangan
+	err = r.db.Model(&presensi).Select("waktu_pulang", "keterangan").Updates(presensi).Error
 	if err != nil {
 		return model.Presensi{}, err
 	}
@@ -119,6 +130,19 @@ func (r *repositoryPresensi) GetPresensiAllPerBulan(bulan int, tahun int) ([]dto
 		Scan(&results).Error
 
 	// query DAYOFWEEK(p.tanggal) BETWEEN 2 AND 6 artinya hanya hitung hari senin-jumat
+
+	return results, err
+}
+
+func (r *repositoryPresensi) GetPresensiAllPerPeriode(awal string, akhir string) ([]dto.KehadiranResult, error) {
+	var results []dto.KehadiranResult
+	err := r.db.Table("presensi_karyawan AS p").
+		Select("p.karyawan_id, k.nama, COUNT(*) AS kehadiran").
+		Joins("JOIN karyawan k ON p.karyawan_id = k.id").
+		Joins("LEFT JOIN hari_libur l ON p.tanggal = l.tanggal").
+		Where("p.tanggal BETWEEN ? AND ? AND l.tanggal IS NULL AND DAYOFWEEK(p.tanggal) BETWEEN 2 AND 6", awal, akhir).
+		Group("p.karyawan_id, k.nama").
+		Scan(&results).Error
 
 	return results, err
 }

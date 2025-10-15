@@ -16,6 +16,7 @@ type ServicePresensi interface {
 	GetPresensiByBulanTahun(bulan int, tahun int) ([]dto.PresensiResponse, error)
 	GetPresensiHarian(tanggal string) ([]dto.PresensiResponse, error)
 	CreateOrUpdatePresensi(presensi dto.CreatePresensiRequest) (dto.PresensiResponse, error)
+	GetPresensiAllPerPeriode(awal string, akhir string) ([]dto.KehadiranResult, error) // untuk menampilkan data presensi semua karyawan per periode
 }
 
 type servicePresensi struct {
@@ -115,7 +116,9 @@ func (s *servicePresensi) CreateOrUpdatePresensi(presensi dto.CreatePresensiRequ
 	} else {
 		// ambil data waktu pulang
 		req.WaktuPulang = presensi.WaktuPulang
-		updatePresensi, err := s.repo.UpdateWaktuPulang(req.KaryawanID, presensi.Tanggal, req.WaktuPulang)
+		req.Keterangan = presensi.Keterangan
+
+		updatePresensi, err := s.repo.UpdateWaktuPulang(req.KaryawanID, presensi.Tanggal, req.WaktuPulang, req.Keterangan)
 		if err != nil {
 			return dto.PresensiResponse{}, err
 		}
@@ -135,4 +138,13 @@ func (s *servicePresensi) GetPresensiByNamaPerHari(nama string, tanggal string) 
 	// convert model to dto
 	presensiDTO := helper.ConvertToDTOPresensiSingle(presensi)
 	return presensiDTO, nil
+}
+
+func (s *servicePresensi) GetPresensiAllPerPeriode(awal string, akhir string) ([]dto.KehadiranResult, error) {
+	presensi, err := s.repo.GetPresensiAllPerPeriode(awal, akhir)
+	if err != nil {
+		return []dto.KehadiranResult{}, err
+	}
+
+	return presensi, nil
 }

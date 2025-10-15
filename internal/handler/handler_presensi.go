@@ -160,3 +160,16 @@ func (h *handlerPresensi) GetPresensiByNamaPerHari(c *gin.Context) {
 
 	helper.StatusSuksesGetData(c, presensi)
 }
+
+func (h *handlerPresensi) GetPresensiAllPerPeriode(c *gin.Context) {
+	awal := c.Query("awal")
+	akhir := c.Query("akhir")
+
+	presensi, err := h.service.GetPresensiAllPerPeriode(awal, akhir)
+	if err != nil {
+		helper.ErrorFetchDataFromDB(c, err)
+		return
+	}
+
+	helper.StatusSuksesGetData(c, presensi)
+}

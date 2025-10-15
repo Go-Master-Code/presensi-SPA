@@ -25,6 +25,16 @@
             <li class="nav-item"><a class="nav-link" href="#/ijin">Ijin Karyawan</a></li>
             <li class="nav-item"><a class="nav-link" href="#/user">User Management</a></li>
             <li class="nav-item"><a class="nav-link" href="#/presensi">Presensi</a></li>
+            <!-- Menu Laporan dengan dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="laporanDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Laporan Presensi
+                </a>
+                <div class="dropdown-menu" aria-labelledby="laporanDropdown">
+                    <a class="dropdown-item" href="#/laporan_presensi/karyawan">Per Karyawan</a>
+                    <a class="dropdown-item" href="#/laporan_presensi/periode">Per Periode</a>
+                </div>
+            </li>
         </ul>
     </nav>
 
@@ -51,6 +61,7 @@
     <script src="js/api/ijin_karyawan.js"></script>
     <script src="js/api/user.js"></script>
     <script src="js/api/presensi.js"></script>
+    <script src="js/api/laporan_presensi_periode.js"></script>
     
     <script src="js/api/app.js"></script>
     

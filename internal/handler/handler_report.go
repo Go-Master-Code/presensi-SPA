@@ -4,6 +4,7 @@ import (
 	"api-presensi/helper"
 	"api-presensi/internal/service"
 	"api-presensi/internal/utils/report/presensi"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -54,4 +55,43 @@ func (h *handlerReport) GenerateReportKehadiran(c *gin.Context) { // handler unt
 	c.Header("Content-Type", "application/pdf")
 	c.Header("Content-Disposition", "attachment; filename="+fileName+".pdf")
 	c.Data(http.StatusOK, "application/pdf", pdfBytes)
+}
+
+func (h *handlerReport) GenerateReportKehadiranPerPeriode(c *gin.Context) { // handler untuk generate report presensi
+	awal := c.Query("awal")
+	akhir := c.Query("akhir")
+
+	results, err := h.service.GenerateReportPresensiPerPeriode(awal, akhir)
+	if err != nil {
+		helper.ErrorFetchDataFromDB(c, err)
+		return
+	}
+
+	// konversi data ke dalam bytes
+	pdfBytes, err := presensi.GenerateReportPresensiAllPerPeriode(awal, akhir, results)
+	if err != nil {
+		helper.ErrorGenerateReport(c, err)
+		return
+	}
+
+	// set file name
+	fileName := "laporan_presensi_" + awal + "_sampai_" + akhir
+
+	c.Header("Content-Type", "application/pdf")
+	c.Header("Content-Disposition", "attachment; filename="+fileName+".pdf")
+	c.Data(http.StatusOK, "application/pdf", pdfBytes)
+}
+
+func (h *handlerReport) GetReportKehadiranPerPeriode(c *gin.Context) { // handler untuk generate report presensi
+	awal := c.Query("awal")
+	akhir := c.Query("akhir")
+
+	log.Println("Masuk handler get report kehadiran periode")
+	results, err := h.service.GenerateReportPresensiPerPeriode(awal, akhir)
+	if err != nil {
+		helper.ErrorFetchDataFromDB(c, err)
+		return
+	}
+
+	helper.StatusSuksesGetData(c, results)
 }

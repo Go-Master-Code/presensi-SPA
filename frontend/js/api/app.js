@@ -6,6 +6,8 @@ const routes = {
     '/presensi': 'pages/presensi.html',
     '/hari_libur': 'pages/hari_libur.html',
     '/user': 'pages/user.html',
+    '/presensi': 'pages/presensi.html',
+    '/laporan_presensi/periode': 'pages/laporan_presensi_periode.html',
     '/test': '/pages/test.html'
 };
 
@@ -51,6 +53,8 @@ function loadRoute() {
             renderUser();
         } else if (path === '/presensi') {
             renderPresensi();
+        } else if (path === '/laporan_presensi/periode') {
+            renderLaporanPresensiPeriode();
         }
     })
     .catch(err => {

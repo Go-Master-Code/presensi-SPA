@@ -76,6 +76,7 @@ func main() {
 	r.GET("/api/presensi/by_month", handlerPresensi.GetPresensiByBulanTahun)
 	r.GET("/api/presensi/harian", handlerPresensi.GetPresensiHarian)
 	// r.GET("/api/laporan/presensi_bulanan", handlerPresensi.GetPresensiBulananReport) // report presensi bulanan
+	r.GET("/api/presensi/periode", handlerPresensi.GetPresensiAllPerPeriode)
 	r.POST("/api/presensi", handlerPresensi.CreatePresensi)
 
 	// dependency injection hari kerja
@@ -94,7 +95,9 @@ func main() {
 	serviceReport := service.NewServiceReport(repoHariKerja, repoPresensi)
 	handlerReport := handler.NewHandlerReport(*serviceReport)
 	// list handler hari kerja
-	r.GET("/laporan/presensi", handlerReport.GenerateReportKehadiran)
+	r.GET("/laporan/presensi", handlerReport.GenerateReportKehadiran)                   // untuk jadi pdf laporan per bulan
+	r.GET("/laporan/presensi/periode", handlerReport.GenerateReportKehadiranPerPeriode) // untuk jadi pdf laporan per periode
+	r.GET("/api/laporan/presensi/periode", handlerReport.GetReportKehadiranPerPeriode)  // untuk tampilkan data jumlah hari kerja dan kehadiran tiap karyawan di layar
 
 	// dependency injection jenjang
 	repoJenjang := repository.NewRepositoryJenjang(database.DB)

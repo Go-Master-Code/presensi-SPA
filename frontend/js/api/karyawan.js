@@ -69,7 +69,7 @@ function fetchAndRenderKaryawan() {
 }
 
 // init datatable
-function initDataTable() {
+function initDataTableKaryawan() {
     if (!$.fn.DataTable.isDataTable('#table-karyawan')) {
         dataTableKaryawan = $('#table-karyawan').DataTable({
             pageLength: 7, // jumlah baris per halaman
@@ -104,7 +104,7 @@ function initDataTable() {
 
 // definisikan data table dan masukkan data yang sudah di fetch
 function renderKaryawan() {
-    initDataTable();
+    initDataTableKaryawan();
     fetchAndRenderKaryawan();
     fetchJenjang();
 
@@ -241,47 +241,6 @@ $(document).on('submit', '#form-karyawan', async function(e) {
     }    
 
     // DEBUG console.log({ id, nama, jenjang});
-    
-    // // 2. kirim request ke backend
-    // fetch("/api/karyawan", {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify({ // request body dalam bentuk key - value (key = nama field json nya, lihat di dto)
-    //         id: id,
-    //         nama: nama,
-    //         jenjang_id: jenjang,
-    //         aktif: true,
-    //     })
-    // })
-    // .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
-    //     if (!res.ok) {
-    //         const errText = await res.text();
-    //         throw new Error(`Gagal simpan data karyawan:\n${errText}`);
-    //     }
-    //     return res.json();
-    // })
-    // .then(data => {
-    //     console.log(data)
-    //     // 4. berikan alert berisi data yang berhasil ditambahkan
-    //     showModalAlertKaryawan(`Data karyawan <strong>${data.data.nama}</strong> berhasil ditambahkan!`, 'success');
-
-    //     // 5. tambah elemen pada tbody
-    //     //appendKaryawan(data.data)
-    //     fetchAndRenderKaryawan();
-
-    //     // 7. kosongkan elemen input
-    //     document.getElementById("id").value="";
-    //     document.getElementById("nama").value="";
-    //     document.getElementById("jenjang").selectedIndex=0;
-
-    //     // fokuskan lagi ke id
-    //     document.getElementById("id").focus();
-    //     // $('#modalKaryawan').modal('hide');
-    // })
-    // // 8. catch error
-    // .catch(err => showModalAlertKaryawan('Terjadi kesalahan: ' + err.message, 'danger'));
 });
 
 // section delete data
