@@ -87,12 +87,13 @@ $(document).on('click', '#button-clear-laporan-presensi-karyawan', function(e) {
 });
 
 $(document).on('click', '#button-export-laporan-presensi-karyawan', function(e) {
+    const karyawan = document.getElementById('karyawan-laporan-presensi-karyawan').value.trim();
     const awal = document.getElementById('tanggal-awal-laporan-presensi-karyawan').value.trim();
     const akhir = document.getElementById('tanggal-akhir-laporan-presensi-karyawan').value.trim();
 
     // jangan gunakan method fetch() karena ini digunakan untuk mengambil data (binary/text/json)
-    // const url = `/laporan/presensi/karyawan?awal=${awal}&akhir=${akhir}`;
-    // window.open(url, '_blank'); // bisa juga '_self' jika ingin di tab yang sama
+    const url = `/laporan/presensi/karyawan?karyawan_id=${karyawan}&awal=${awal}&akhir=${akhir}`;
+    window.open(url, '_blank'); // bisa juga '_self' jika ingin di tab yang sama
 });
 
 // alert untuk find data

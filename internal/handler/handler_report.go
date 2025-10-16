@@ -4,7 +4,6 @@ import (
 	"api-presensi/helper"
 	"api-presensi/internal/service"
 	"api-presensi/internal/utils/report/presensi"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -86,7 +85,7 @@ func (h *handlerReport) GetReportKehadiranPerPeriode(c *gin.Context) { // handle
 	awal := c.Query("awal")
 	akhir := c.Query("akhir")
 
-	log.Println("Masuk handler get report kehadiran periode")
+	// log.Println("Masuk handler get report kehadiran periode")
 	results, err := h.service.GenerateReportPresensiPerPeriode(awal, akhir)
 	if err != nil {
 		helper.ErrorFetchDataFromDB(c, err)

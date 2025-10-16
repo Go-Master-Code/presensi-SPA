@@ -4,6 +4,8 @@ import (
 	"api-presensi/helper"
 	"api-presensi/internal/dto"
 	"api-presensi/internal/service"
+	"api-presensi/internal/utils/report/presensi"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -172,4 +174,31 @@ func (h *handlerPresensi) GetPresensiAllPerPeriode(c *gin.Context) {
 	}
 
 	helper.StatusSuksesGetData(c, presensi)
+}
+
+// cek laporan presensi by id karyawan, tanggalAwal, dan tanggalAkhir
+func (h *handlerPresensi) GenerateReportKehadiranPerKaryawan(c *gin.Context) { // handler untuk generate report presensi
+	idKaryawan := c.Query("karyawan_id")
+	awal := c.Query("awal")
+	akhir := c.Query("akhir")
+
+	results, err := h.service.GetPresensiByIdByPeriode(idKaryawan, awal, akhir)
+	if err != nil {
+		helper.ErrorFetchDataFromDB(c, err)
+		return
+	}
+
+	// konversi data ke dalam bytes
+	pdfBytes, err := presensi.GenerateReportPresensiPerKaryawanPerPeriode(awal, akhir, results)
+	if err != nil {
+		helper.ErrorGenerateReport(c, err)
+		return
+	}
+
+	// set file name
+	fileName := "laporan_presensi_" + idKaryawan + "_dari_" + awal + "_sampai_" + akhir
+
+	c.Header("Content-Type", "application/pdf")
+	c.Header("Content-Disposition", "attachment; filename="+fileName+".pdf")
+	c.Data(http.StatusOK, "application/pdf", pdfBytes)
 }

@@ -69,7 +69,7 @@ func (s *ServiceReport) GenerateReportKehadiran(bulan, tahun int) (*model.Kehadi
 }
 
 func (s *ServiceReport) GenerateReportPresensiPerPeriode(awal, akhir string) (*model.KehadiranReport, error) {
-	log.Println("Masuk method cari jumlah hari kerja")
+	//log.Println("Masuk method cari jumlah hari kerja")
 	tglAwal, err := time.Parse("2006-01-02", awal) // parsing tanggal awal
 	if err != nil {                                // jika parsing date gagal
 		return &model.KehadiranReport{}, err

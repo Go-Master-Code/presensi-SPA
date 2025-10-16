@@ -78,6 +78,7 @@ func main() {
 	// r.GET("/api/laporan/presensi_bulanan", handlerPresensi.GetPresensiBulananReport) // report presensi bulanan
 	r.GET("/api/presensi/periode", handlerPresensi.GetPresensiAllPerPeriode)
 	r.POST("/api/presensi", handlerPresensi.CreatePresensi)
+	r.GET("/laporan/presensi/karyawan", handlerPresensi.GenerateReportKehadiranPerKaryawan) // untuk jadi pdf laporan presensi per karyawan per bulan
 
 	// dependency injection hari kerja
 	repoHariKerja := repository.NewRepositoryHariLibur(database.DB)
