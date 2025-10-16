@@ -126,6 +126,11 @@ func main() {
 		c.File("./frontend/index.html")
 	})
 
+	// Route untuk ke sistem absensi
+	r.GET("/main", func(c *gin.Context) {
+		c.File("./frontend/main.html")
+	})
+
 	r.NoRoute(func(c *gin.Context) {
 		c.File("./frontend/index.html")
 	})

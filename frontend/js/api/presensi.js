@@ -67,22 +67,22 @@ function fetchAndRenderPresensi() {
         
         // tambah data presensi ke dalam tabel
         dataTablePresensi.rows.add(
-        dataArray.map(p => {
-            // cek status terlambat menggunakan function (di atas)
-            const statusTerlambat = isTerlambat(p.waktu_masuk) ? '<span class="text-danger font-weight-bold">Terlambat</span>' : '';
+            dataArray.map(p => {
+                // cek status terlambat menggunakan function (di atas)
+                const statusTerlambat = isTerlambat(p.waktu_masuk) ? '<span class="text-danger font-weight-bold">Terlambat</span>' : '';
 
-            return [
-                p.id,
-                p.karyawan_nama,
-                p.waktu_masuk,
-                statusTerlambat,  // Tambahkan kolom status
-                p.waktu_pulang,
-                p.keterangan,
-                `<button class="btn btn-sm btn-info btn-edit" onclick='openModalEditpresensi(${JSON.stringify(p)})'>
-                    <i class="fas fa-edit"></i> Edit
-                </button>`
-            ];
-        })
+                return [
+                    p.id,
+                    p.karyawan_nama,
+                    p.waktu_masuk,
+                    statusTerlambat,  // Tambahkan kolom status
+                    p.waktu_pulang,
+                    p.keterangan,
+                    `<button class="btn btn-sm btn-info btn-edit" onclick='openModalEditpresensi(${JSON.stringify(p)})'>
+                        <i class="fas fa-edit"></i> Edit
+                    </button>`
+                ];
+            })
     ).draw();
 
     })

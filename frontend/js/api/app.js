@@ -8,6 +8,7 @@ const routes = {
     '/user': 'pages/user.html',
     '/presensi': 'pages/presensi.html',
     '/laporan_presensi/periode': 'pages/laporan_presensi_periode.html',
+    '/laporan_presensi/karyawan': 'pages/laporan_presensi_karyawan.html',
     '/test': '/pages/test.html'
 };
 
@@ -55,6 +56,8 @@ function loadRoute() {
             renderPresensi();
         } else if (path === '/laporan_presensi/periode') {
             renderLaporanPresensiPeriode();
+        } else if (path === '/laporan_presensi/karyawan') {
+            renderLaporanPresensiKaryawan();
         }
     })
     .catch(err => {

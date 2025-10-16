@@ -37,7 +37,7 @@ func (r *repositoryPresensi) GetAllPresensi() ([]model.Presensi, error) {
 
 func (r *repositoryPresensi) GetPresensiByIdByPeriode(karyawanID string, tanggalAwal string, tanggalAkhir string) ([]model.Presensi, error) {
 	var presensi []model.Presensi
-	err := r.db.Where("karyawan_id=? and tanggal between ? and ?", karyawanID, tanggalAwal, tanggalAkhir).Find(&presensi).Error
+	err := r.db.Preload("Karyawan").Where("karyawan_id=? and tanggal between ? and ?", karyawanID, tanggalAwal, tanggalAkhir).Find(&presensi).Error
 	return presensi, err
 }
 

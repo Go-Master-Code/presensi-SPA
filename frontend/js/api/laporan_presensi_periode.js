@@ -50,10 +50,15 @@ function initDataTableLaporanPresensi() {
 
 // button clear filter tanggal awal dan akhir periode laporan
 $(document).on('click', '#button-clear-laporan-presensi-periode', function(e) {
-    document.getElementById('tanggal-awal-laporan-presensi-periode').value = '';
-    document.getElementById('tanggal-akhir-laporan-presensi-periode').value = '';
+    // langsung clear semua elemen form
+    document.getElementById('form-laporan-presensi-periode').reset();
+    document.getElementById('button-export-laporan-presensi-periode').disabled=true;
+    
+    // OLD METHOD
+    // document.getElementById('tanggal-awal-laporan-presensi-periode').value = '';
+    // document.getElementById('tanggal-akhir-laporan-presensi-periode').value = '';
     // hapus isi jumlah kerja
-    document.getElementById('jml-hari-kerja').value="";
+    // document.getElementById('jml-hari-kerja').value="";
     // dataTableLaporanPresensiPeriode.clear();
     dataTableLaporanPresensiPeriode.clear().draw(); // Kosongkan tabel
 });
@@ -95,7 +100,8 @@ function showAlertLaporanPresensiPeriode(message, type = 'success', duration = 4
 }
 
 // event listener saat button find ditekan (dengan periode tanggal awal dan akhir)
-$(document).on('click', '#button-submit-laporan-presensi-periode', function(e) {
+$(document).on('submit', '#form-laporan-presensi-periode', function(e) {
+    e.preventDefault(); // Mencegah reload halaman
     const awal = document.getElementById('tanggal-awal-laporan-presensi-periode').value.trim();
     const akhir = document.getElementById('tanggal-akhir-laporan-presensi-periode').value.trim();
 
@@ -108,6 +114,8 @@ $(document).on('click', '#button-submit-laporan-presensi-periode', function(e) {
             document.getElementById('jml-hari-kerja').value="";
             // show alert tidak ditemukan
             showAlertLaporanPresensiPeriode(`Data presensi tidak ditemukan!`, 'danger');
+            // disable button export
+            document.getElementById('button-export-laporan-presensi-periode').disabled=true;
             // kosongkan table
             dataTableLaporanPresensiPeriode.clear().draw();
             const errText = await res.text();
@@ -124,6 +132,7 @@ $(document).on('click', '#button-submit-laporan-presensi-periode', function(e) {
             dataTableLaporanPresensiPeriode.clear().draw();
             // hapus isi jumlah kerja
             document.getElementById('jml-hari-kerja').value="";
+            document.getElementById('button-export-laporan-presensi-periode').disabled=true;
             // show alert tidak ditemukan
             showAlertLaporanPresensiPeriode('Data presensi tidak ditemukan untuk periode tersebut!', 'danger');
             return;
@@ -148,6 +157,9 @@ $(document).on('click', '#button-submit-laporan-presensi-periode', function(e) {
                 hariKerja-p.kehadiran
             ])
         ).draw();
+
+        // enable tombol export
+        document.getElementById('button-export-laporan-presensi-periode').disabled=false;
     })
     .catch(err => {
         console.error(err);
