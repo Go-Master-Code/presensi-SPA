@@ -15,6 +15,18 @@ const routes = {
 
 const appDiv = document.getElementById('app');
 
+// mendapatkan token jika ada
+function getToken() {
+    return localStorage.getItem('jwt_token');
+}
+
+// get username from login
+function getUsername() {
+    const savedUsername = localStorage.getItem('username');
+    const elemen = document.getElementById('username-display');
+    elemen.textContent = 'Halo, '+savedUsername;
+}
+
 function loadRoute() {
     const hash = location.hash || '#/';
     if (typeof hash !== 'string') {
@@ -67,4 +79,17 @@ function loadRoute() {
 }
 
 window.addEventListener('hashchange', loadRoute);
-window.addEventListener('DOMContentLoaded', loadRoute);
+window.addEventListener('DOMContentLoaded', () => {
+    // cek dulu apakah sudah ada jwt token
+    const token = getToken();
+    
+    // Redirect kalau belum login
+    if (!token && location.pathname !== "/login") {
+        location.href = "/login";
+        return;
+    }
+
+    // jika sudah ada baru lakukan loadRoute
+    loadRoute();
+    getUsername();
+});

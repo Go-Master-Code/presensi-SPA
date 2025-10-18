@@ -22,10 +22,9 @@ function fetchWithAuth(url, options = {}) {
                  // Token expired atau tidak valid
                 alert('Sesi Anda telah berakhir. Silakan login kembali.');
                 localStorage.removeItem('jwt_token');
-                // window.location.hash= '#/login';
+                location.href = '/login';
                 // throw new Error('Unauthorized - token tidak valid');
             }
-           
         }
 
         if (!res.ok) {

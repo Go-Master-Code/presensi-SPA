@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const waktuMySQL = today.toTimeString().split(' ')[0];
 
              // 2. kirim request ke backend
-            fetch("/api/presensi", {
+            fetchWithAuth("/api/presensi", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

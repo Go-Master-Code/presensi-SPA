@@ -17,27 +17,24 @@ async function loginUser(username, password) {
         const data = await response.json();
         const token = data.data // response di json data:isinya token
 
-        alert("Token: "+token);
+        // DEBUG alert("Token: "+token);
 
         if (token) {
             // Simpan token di localStorage (atau sessionStorage)
             localStorage.setItem('jwt_token', token);
+            localStorage.setItem('username', username);
             return true;
         } else {
             throw new Error('Token tidak ditemukan pada response');
         }
-        } catch (err) {
+    }
+    catch (err) {
         throw err;
     }
 }
 
 function clearFormValidation(form) {
   form.classList.remove('was-validated');
-}
-
-function showError(message) {
-  // Contoh sederhana, bisa ganti dengan toast notification atau modal
-  alert(message);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -100,7 +97,7 @@ function showAlertLogin(message, type = 'success', duration = 4000) {
 // menambahkan header autentikasi pada setiap API (reusable)
 function fetchWithAuth(url, options = {}) {
     const token = localStorage.getItem('jwt_token');
-    alert("Token: "+token);
+    // DEBUG alert("Token: "+token);
     const headers = {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',

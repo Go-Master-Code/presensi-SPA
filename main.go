@@ -29,10 +29,19 @@ func main() {
 	// buat group route api
 	api := r.Group("/api")
 
+	// dependency injection karyawan
+	repoKaryawan := repository.NewRepositoryKaryawan(database.DB)
+	serviceKaryawan := service.NewServiceKaryawan(repoKaryawan)
+	handlerKaryawan := handler.NewHandlerKaryawan(serviceKaryawan)
+
+	api.GET("/karyawan", handlerKaryawan.GetAllKaryawan)
+
 	// dependency injection presensi
 	repoPresensi := repository.NewRepositoryPresensi(database.DB)
 	servicePresensi := service.NewServicePresensi(repoPresensi)
 	handlerPresensi := handler.NewHandlerPresensi(servicePresensi)
+
+	// list handler presensi
 	api.POST("/presensi", handlerPresensi.CreatePresensi)
 
 	// endpoint login sebelum bisa mengakses endpoint lainnya
@@ -64,12 +73,6 @@ func main() {
 		api.POST("/user", middleware.RequestLogger(serviceLog), handlerUser.CreateUser) // contoh middleware pada endpoint (lebih spesifik) bagus jika hanya ingin dipasang di endpoint tertentu
 		api.PUT("/user/:id", handlerUser.UpdateUser)
 
-		// dependency injection karyawan
-		repoKaryawan := repository.NewRepositoryKaryawan(database.DB)
-		serviceKaryawan := service.NewServiceKaryawan(repoKaryawan)
-		handlerKaryawan := handler.NewHandlerKaryawan(serviceKaryawan)
-
-		api.GET("/karyawan", handlerKaryawan.GetAllKaryawan)
 		api.GET("/karyawan/:id", handlerKaryawan.GetKaryawanByID)
 		api.DELETE("/karyawan/:id", handlerKaryawan.DeleteKaryawanByID)
 		api.POST("/karyawan", handlerKaryawan.CreateKaryawan)
@@ -97,7 +100,6 @@ func main() {
 
 		// dependency injection dilakukan diluar Auth JWT
 
-		// list handler presensi
 		api.GET("/presensi", handlerPresensi.GetAllPresensi)
 		api.GET("/presensi/by_periode", handlerPresensi.GetPresensiByIdByPeriode)
 		// r.GET("/api/presensi/nama", handlerPresensi.GetPresensiByNamaPerHari)
@@ -138,7 +140,6 @@ func main() {
 		laporan.GET("/presensi/karyawan", handlerPresensi.GenerateReportKehadiranPerKaryawan) // untuk jadi pdf laporan presensi per karyawan per bulan
 		laporan.GET("/presensi", handlerReport.GenerateReportKehadiran)                       // untuk jadi pdf laporan per bulan
 		laporan.GET("/presensi/periode", handlerReport.GenerateReportKehadiranPerPeriode)     // untuk jadi pdf laporan per periode
-
 	}
 
 	// handler untuk frontend

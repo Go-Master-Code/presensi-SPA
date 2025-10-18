@@ -4,7 +4,7 @@ import "time"
 
 type Log struct {
 	ID        int       `json:"id" gorm:"primaryKey"`
-	UserID    *uint     `json:"user_id"` // bisa ada / ngga (misal guest ga punya userID) -> pointer akan menyimpan NULL di db
+	UserID    *string   `json:"user_id"` // bisa ada / ngga (misal guest ga punya userID) -> pointer akan menyimpan NULL di db
 	Method    string    `json:"method"`
 	Endpoint  string    `json:"endpoint"`
 	IPAddress string    `json:"ip_address"`

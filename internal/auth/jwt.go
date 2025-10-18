@@ -14,7 +14,7 @@ func GenerateToken(username string, role string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
 		"role":     role,
-		"exp":      time.Now().Add(time.Hour * 1).Unix(), // harus exp bukan expired
+		"exp":      time.Now().Add(time.Hour * 12).Unix(), // harus exp bukan expired
 	})
 	return token.SignedString(secretKey)
 }

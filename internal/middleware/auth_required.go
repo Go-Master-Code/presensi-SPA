@@ -38,6 +38,8 @@ func AuthRequired() gin.HandlerFunc {
 		// ambil dan simpan claims ke context
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("claims", claims) // bisa akses "role", "username", dsb dari middleware lain
+			username := claims["username"].(string)
+			c.Set("username", username)
 		} else {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token claims tidak valid!"})
 			c.Abort()

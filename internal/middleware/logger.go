@@ -14,10 +14,10 @@ func RequestLogger(logService service.ServiceLog) gin.HandlerFunc {
 		// Filter hanya method tertentu
 		switch c.Request.Method {
 		case "POST", "PUT", "DELETE": // simpan hanya ketiga method ini agar method lain (yang tidak diperlukan) tidak ikut tersimpan di db
-			userID := getUserIDFromContext(c)
+			username := getUserIDFromContext(c)
 
 			logDTO := dto.CreateLog{
-				UserID:    userID,
+				UserID:    username,
 				Method:    c.Request.Method,
 				Endpoint:  c.FullPath(),
 				IPAddress: c.ClientIP(),
@@ -31,16 +31,19 @@ func RequestLogger(logService service.ServiceLog) gin.HandlerFunc {
 }
 
 // Mengambil userID dari context (di-set oleh middleware auth)
-func getUserIDFromContext(c *gin.Context) *uint {
-	userIDValue, exists := c.Get("userID")
+func getUserIDFromContext(c *gin.Context) *string {
+	username, exists := c.Get("username")
 	if !exists { // kalo ga ada UserID nya akan disimpan null di db
 		return nil
 	}
 
-	userID, ok := userIDValue.(uint)
-	if !ok {
-		return nil
-	}
+	// parsing any ke string
+	user := username.(string)
 
-	return &userID
+	// userID, ok := userIDValue.(uint)
+	// if !ok {
+	// 	return nil
+	// }
+
+	return &user
 }
