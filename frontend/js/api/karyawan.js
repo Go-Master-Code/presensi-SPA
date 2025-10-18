@@ -21,7 +21,7 @@ async function handleFetchJSON(fetchPromise) {
 
 // fetch data dari API dan masukkan ke dalam table
 function fetchAndRenderKaryawan() {
-    fetch('/api/karyawan')
+    return fetchWithAuth('/api/karyawan')
     .then (async res=> { // tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // showAlertFindContainer(`Data hari libur tidak ditemukan!`, 'danger');
@@ -124,7 +124,7 @@ function createOption(value, text) { // func untuk add options ke dalam select
 
 // fetch data jenjang untuk modal add dan edit karyawan
 function fetchJenjang() {
-    fetch("/api/jenjang")
+    return fetchWithAuth("/api/jenjang")
     .then(response=> response.json()) // ubah ke format json
     .then(data=> {
         const select = document.getElementById("jenjang");
@@ -206,7 +206,7 @@ $(document).on('submit', '#form-karyawan', async function(e) {
     const jenjang = Number(document.getElementById("jenjang").value);
     
     try {
-        const data = await handleFetchJSON(fetch("/api/karyawan", {
+        const data = await handleFetchJSON(fetchWithAuth("/api/karyawan", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -259,7 +259,7 @@ $(document).on('click', '#button-delete-karyawan', function(e) {
 
     // showSpinner(); // ⏳ Tampilkan spinner
 
-    fetch(`api/karyawan/${idToDelete}`, { method: 'DELETE' })
+    fetchWithAuth(`api/karyawan/${idToDelete}`, { method: 'DELETE' })
     .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             const errText = await res.text();
@@ -329,7 +329,7 @@ $(document).on('submit', '#form-edit-karyawan', function(e) {
     // DEBUG console.log({ id, nama, jenjang, aktif});
     
     // 2. kirim request ke backend
-    fetch(`/api/karyawan/${id}`, {
+    fetchWithAuth(`/api/karyawan/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

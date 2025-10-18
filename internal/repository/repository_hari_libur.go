@@ -12,7 +12,7 @@ type RepositoryHariLibur interface {
 	GetHariKerjaPerBulan(start, end time.Time) ([]model.HariLibur, error)
 	DeleteHariLibur(id int) (model.HariLibur, error)
 	CreateHariLibur(hl model.HariLibur) (model.HariLibur, error)
-	ExistsByDate(tanggal string) (bool, error)
+	ExistsByDate(tanggal string) bool
 	UpdateHariLibur(id int, updateMap map[string]any) (model.HariLibur, error)
 }
 
@@ -57,11 +57,11 @@ func (r *repositoryHariLibur) CreateHariLibur(newData model.HariLibur) (model.Ha
 	return newData, err
 }
 
-func (r *repositoryHariLibur) ExistsByDate(tanggal string) (bool, error) {
+func (r *repositoryHariLibur) ExistsByDate(tanggal string) bool {
 	var hariLibur model.HariLibur
 	var count int64
-	err := r.db.Where("tanggal = ?", tanggal).First(&hariLibur).Count(&count).Error
-	return count > 0, err
+	r.db.Where("tanggal = ?", tanggal).First(&hariLibur).Count(&count)
+	return count > 0
 }
 
 func (r *repositoryHariLibur) UpdateHariLibur(id int, updateMap map[string]any) (model.HariLibur, error) {

@@ -31,7 +31,7 @@ function createOption(value, text) { // func untuk add options ke dalam select
 }
 
 function fetchKaryawanLaporanKaryawan() {
-    fetch("/api/karyawan")
+    fetchWithAuth("/api/karyawan")
     .then(response=> response.json()) // ubah ke format json
     .then(data=> {
         const selectKaryawanLaporanKaryawan = document.getElementById("karyawan-laporan-presensi-karyawan");
@@ -134,7 +134,7 @@ $(document).on('submit', '#form-laporan-presensi-karyawan', function(e) {
     // Tampilkan loading atau disable button kalau perlu
     
     // api/presensi/by_periode?karyawan_id=1234567897&tanggal_awal=2025-01-01&tanggal_akhir=2025-10-01
-    fetch(`/api/presensi/by_periode?karyawan_id=${idKaryawan}&tanggal_awal=${awal}&tanggal_akhir=${akhir}`) // tangkap jumlah hari kerja global, hari kerja tiap orang
+    fetchWithAuth(`/api/presensi/by_periode?karyawan_id=${idKaryawan}&tanggal_awal=${awal}&tanggal_akhir=${akhir}`) // tangkap jumlah hari kerja global, hari kerja tiap orang
     .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // show alert tidak ditemukan

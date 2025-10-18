@@ -1,5 +1,6 @@
 const routes = {
     '/': 'pages/karyawan.html',       // halaman default
+    '/login': 'pages/login.html',       // halaman login
     '/karyawan': 'pages/karyawan.html',
     '/jenis_ijin': 'pages/jenis_ijin.html',
     '/ijin': 'pages/ijin_karyawan.html',

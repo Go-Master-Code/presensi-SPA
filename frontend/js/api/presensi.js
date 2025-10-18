@@ -36,7 +36,7 @@ function isTerlambat(waktuMasuk, batas = "07:00:00") {
 // fetch data dari API dan masukkan ke dalam table
 function fetchAndRenderPresensi() {
     const tanggal = getTodayDate();
-    fetch(`/api/presensi/harian?tanggal=${tanggal}`)
+    fetchWithAuth(`/api/presensi/harian?tanggal=${tanggal}`)
     .then (async res=> { // tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // showAlertFindContainer(`Data hari libur tidak ditemukan!`, 'danger');
@@ -142,7 +142,7 @@ function createOption(value, text) { // func untuk add options ke dalam select
 
 // fetch data karyawan untuk modal add dan edit presensi karyawan
 function fetchKaryawanForPresensi() {
-    fetch("/api/karyawan")
+    fetchWithAuth("/api/karyawan")
     .then(response=> response.json()) // ubah ke format json
     .then(data=> {
         const selectKaryawan = document.getElementById("karyawan-presensi");
@@ -214,7 +214,7 @@ $(document).on('submit', '#form-presensi', async function(e) {
     const keterangan = document.getElementById("keterangan-presensi").value;
     
     try {
-        const data = await handleFetchJSON(fetch("/api/presensi", {
+        const data = await handleFetchJSON(fetchWithAuth("/api/presensi", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -303,7 +303,7 @@ $(document).on('submit', '#form-edit-presensi', function(e) {
     // DEBUG console.log({ id, nama, jenjang, aktif});
     
     // 2. kirim request ke backend
-    fetch(`/api/presensi/`, {
+    fetchWithAuth(`/api/presensi/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

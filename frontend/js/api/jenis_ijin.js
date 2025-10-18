@@ -21,7 +21,7 @@ async function handleFetchJSON(fetchPromise) {
 
 // fetch data dari API dan masukkan ke dalam table
 function fetchAndRenderJenisIjin() {
-    fetch('api/jenis_ijin')
+    fetchWithAuth('api/jenis_ijin')
     .then (async res=> { // tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // showAlertFindContainer(`Data hari libur tidak ditemukan!`, 'danger');
@@ -167,7 +167,7 @@ $(document).on('submit', '#form-jenis-ijin', async function(e) {
     const deskripsiIjin = document.getElementById("deskripsi-ijin").value;
 
     try {
-        const data = await handleFetchJSON(fetch("/api/jenis_ijin", {
+        const data = await handleFetchJSON(fetchWithAuth("/api/jenis_ijin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -306,7 +306,7 @@ $(document).on('submit', '#form-edit-jenis-ijin', function(e) {
     const aktif = document.getElementById("edit-jenis-ijin-aktif").checked; 
      
     // 2. kirim request ke backend
-    fetch(`/api/jenis_ijin/${id}`, {
+    fetchWithAuth(`/api/jenis_ijin/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

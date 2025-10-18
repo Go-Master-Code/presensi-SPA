@@ -107,7 +107,7 @@ $(document).on('submit', '#form-laporan-presensi-periode', function(e) {
 
     // Tampilkan loading atau disable button kalau perlu
     
-    fetch(`/api/laporan/presensi/periode?awal=${awal}&akhir=${akhir}`) // tangkap jumlah hari kerja global, hari kerja tiap orang
+    fetchWithAuth(`/api/laporan/presensi/periode?awal=${awal}&akhir=${akhir}`) // tangkap jumlah hari kerja global, hari kerja tiap orang
     .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // hapus isi jumlah kerja

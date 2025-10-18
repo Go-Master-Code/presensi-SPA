@@ -94,10 +94,7 @@ func (s *serviceHariKerja) CreateHariLibur(hl dto.CreateHariLiburRequest) (dto.H
 	}
 
 	// cek apa tanggal hari libur sudah ada
-	exist, err := s.repo.ExistsByDate(hl.Tanggal)
-	if err != nil {
-		return dto.HariLiburResponse{}, err
-	}
+	exist := s.repo.ExistsByDate(hl.Tanggal)
 
 	if exist {
 		return dto.HariLiburResponse{}, errors.New("data hari libur sudah ada")

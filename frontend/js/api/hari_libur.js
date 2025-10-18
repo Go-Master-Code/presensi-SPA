@@ -21,7 +21,7 @@ async function handleFetchJSON(fetchPromise) {
 
 // fetch data dari API dan masukkan ke dalam table
 function fetchAndRenderHariLibur() {
-    fetch('api/hari_libur')
+    fetchWithAuth('api/hari_libur')
     .then (async res=> { // tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // showAlertFindContainer(`Data hari libur tidak ditemukan!`, 'danger');
@@ -168,7 +168,7 @@ $(document).on('submit', '#form-hari-libur', async function(e) {
     const keterangan = document.getElementById("keterangan").value;
 
     try {
-        const data = await handleFetchJSON(fetch("/api/hari_libur", {
+        const data = await handleFetchJSON(fetchWithAuth("/api/hari_libur", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -188,8 +188,9 @@ $(document).on('submit', '#form-hari-libur', async function(e) {
 
     } catch (err) {
         // Gagal
+        let errorMsg = (JSON.parse(err.message).error) || 'Terjadi kesalahan'; // ekstrak json "error" dari keseluruhan json response
         console.log("Error: "+err.message)
-        showModalAlertHariLibur('Terjadi kesalahan: ' + err.message, 'danger');
+        showModalAlertHariLibur('Terjadi kesalahan: ' + errorMsg, 'danger');
     }
 });
 
@@ -261,7 +262,7 @@ $(document).on('click', '#button-delete-hari-libur', function(e) {
 
     // showSpinner(); // ⏳ Tampilkan spinner
 
-    fetch(`api/hari_libur/${idHariLiburToDelete}`, { method: 'DELETE' })
+    fetchWithAuth(`api/hari_libur/${idHariLiburToDelete}`, { method: 'DELETE' })
     .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             const errText = await res.text();
@@ -329,7 +330,7 @@ $(document).on('submit', '#form-edit-hari-libur', function(e) {
     // DEBUG console.log({ id, nama, jenjang, aktif});
     
     // 2. kirim request ke backend
-    fetch(`/api/hari_libur/${id}`, {
+    fetchWithAuth(`/api/hari_libur/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

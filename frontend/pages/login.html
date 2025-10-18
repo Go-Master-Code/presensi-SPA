@@ -1,0 +1,48 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.1/assets/img/favicons/favicon.ico">
+
+    <title>Login Sistem Informasi Presensi</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/sign-in/">
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/signin.css" />
+</head>
+
+<body class="text-center">
+    <form id="form-login" class="form-signin" autocomplete="off">
+        <img class="mb-4" src="assets/pf.jpg" alt="" width="50%" height="50%">
+        <h1 class="h3 mb-3 font-weight-normal">Login Sistem Presensi</h1>
+        <!-- alert jika username atau password salah -->
+        <div id="alert-container-login"></div>
+        <label for="username-login" class="sr-only">Username</label>
+        <input type="text" id="username-login" name="username-login" class="form-control" placeholder="Username" required autofocus>
+        <label for="password-login" class="sr-only">Password</label>
+        <input type="password" id="password-login" name="password-login" class="form-control" placeholder="Password" required>
+        
+        <button class="btn btn-lg btn-primary btn-block" id="button-login" name="button-login" type="submit">Login</button>
+        <p class="mt-5 mb-3 text-muted">Developed by:<br>Kevin Kristianto, S.Kom., M.Kom.<br>&copy; 2025</p>
+    </form>
+
+    <!-- kumpulan script js pendukung -->
+     <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <!-- kumpulan script js utama -->
+    <script src="js/api/login.js"></script>
+</body>
+</html>

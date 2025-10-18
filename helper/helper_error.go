@@ -125,14 +125,6 @@ func ErrorParsingDate(c *gin.Context, err error) {
 	})
 }
 
-func ErrorHashingPassword(c *gin.Context, err error) {
-	c.JSON(http.StatusInternalServerError, AllErrors{
-		Code:    http.StatusInternalServerError,
-		Message: "gagal hash password user",
-		Error:   err.Error(),
-	})
-}
-
 func ErrorHitungHariKerja(c *gin.Context, err error) {
 	c.JSON(http.StatusInternalServerError, AllErrors{
 		Code:    http.StatusInternalServerError,
@@ -145,6 +137,30 @@ func ErrorGenerateReport(c *gin.Context, err error) {
 	c.JSON(http.StatusInternalServerError, AllErrors{
 		Code:    http.StatusInternalServerError,
 		Message: "gagal generate report",
+		Error:   err.Error(),
+	})
+}
+
+func ErrorHashingPassword(c *gin.Context, err error) {
+	c.JSON(http.StatusInternalServerError, AllErrors{
+		Code:    http.StatusInternalServerError,
+		Message: "gagal hash password user",
+		Error:   err.Error(),
+	})
+}
+
+func ErrorWrongPassword(c *gin.Context) {
+	c.JSON(http.StatusBadRequest, AllErrors{
+		Code:    http.StatusBadRequest,
+		Message: "password salah",
+		Error:   errors.New("password salah").Error(),
+	})
+}
+
+func ErrorGenerateToken(c *gin.Context, err error) {
+	c.JSON(http.StatusInternalServerError, AllErrors{
+		Code:    http.StatusInternalServerError,
+		Message: "gagal generate token",
 		Error:   err.Error(),
 	})
 }

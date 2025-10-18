@@ -188,3 +188,13 @@ func ConvertToDTORolePlural(roles []model.Role) []dto.RoleResponse {
 	}
 	return rolesDTO
 }
+
+func ConvertToDTOAuditLogSingle(log model.Log) dto.LogResponse {
+	var logDTO dto.LogResponse
+	logDTO.UserID = log.UserID
+	logDTO.Method = log.Method
+	logDTO.Endpoint = log.Endpoint
+	logDTO.IPAddress = log.IPAddress
+	logDTO.UserAgent = log.UserAgent
+	return logDTO
+}

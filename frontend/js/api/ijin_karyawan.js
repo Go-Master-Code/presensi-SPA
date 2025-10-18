@@ -21,7 +21,7 @@ async function handleFetchJSON(fetchPromise) {
 
 // fetch data dari API dan masukkan ke dalam table
 function fetchAndRenderIjinKaryawan() {
-    fetch('/api/ijin')
+    fetchWithAuth('/api/ijin')
     .then (async res=> { // tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // showAlertFindContainer(`Data hari libur tidak ditemukan!`, 'danger');
@@ -120,7 +120,7 @@ function createOption(value, text) { // func untuk add options ke dalam select
 
 // fetch data jenis ijin untuk modal add dan edit ijin karyawan
 function fetchJenisIjin() {
-    fetch("/api/jenis_ijin")
+    fetchWithAuth("/api/jenis_ijin")
     .then(response=> response.json()) // ubah ke format json
     .then(data=> {
         const selectJenisIjin = document.getElementById("jenis-ijin-nama");
@@ -138,7 +138,7 @@ function fetchJenisIjin() {
 
 // fetch data karyawan untuk modal add dan edit ijin karyawan
 function fetchKaryawanForIjin() {
-    fetch("/api/karyawan")
+    fetchWithAuth("/api/karyawan")
     .then(response=> response.json()) // ubah ke format json
     .then(data=> {
         const selectKaryawan = document.getElementById("karyawan-ijin");
@@ -210,7 +210,7 @@ $(document).on('submit', '#form-ijin-karyawan', async function(e) {
     const keterangan = document.getElementById("keterangan-ijin").value;
     
     try {
-        const data = await handleFetchJSON(fetch("/api/ijin", {
+        const data = await handleFetchJSON(fetchWithAuth("/api/ijin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -297,7 +297,7 @@ $(document).on('submit', '#form-edit-ijin-karyawan', function(e) {
     // DEBUG console.log({ id, nama, jenjang, aktif});
     
     // 2. kirim request ke backend
-    fetch(`/api/ijin/${id}`, {
+    fetchWithAuth(`/api/ijin/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

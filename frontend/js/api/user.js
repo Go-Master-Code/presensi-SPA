@@ -21,7 +21,7 @@ async function handleFetchJSON(fetchPromise) {
 
 // fetch data dari API dan masukkan ke dalam table
 function fetchAndRenderUser() {
-    fetch('api/user')
+    fetchWithAuth('api/user')
     .then (async res=> { // tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             // showAlertFindContainer(`Data user tidak ditemukan!`, 'danger');
@@ -119,7 +119,7 @@ function createOption(value, text) { // func untuk add options ke dalam select
 
 // fetch data role untuk modal add dan edit user
 function fetchRole() {
-    fetch("/api/role")
+    fetchWithAuth("/api/role")
     .then(response=> response.json()) // ubah ke format json
     .then(data=> {
         const roleUser = document.getElementById("role-user");
@@ -227,7 +227,7 @@ $(document).on('submit', '#form-user', async function(e) {
     }
 
     try {
-        const data = await handleFetchJSON(fetch("/api/user", {
+        const data = await handleFetchJSON(fetchWithAuth("/api/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -276,7 +276,7 @@ $(document).on('click', '#button-delete-user', function(e) {
 
     // showSpinner(); // ⏳ Tampilkan spinner
 
-    fetch(`api/user/${idUserToDelete}`, { method: 'DELETE' })
+    fetchWithAuth(`api/user/${idUserToDelete}`, { method: 'DELETE' })
     .then (async res=> { // 3. tangkap error nya agar dapat dimunculkan di console
         if (!res.ok) {
             const errText = await res.text();
@@ -355,7 +355,7 @@ $(document).on('submit', '#form-edit-user', function(e) {
     console.log({ id, email, username, password, roleID});
     
     // 2. kirim request ke backend
-    fetch(`/api/user/${id}`, {
+    fetchWithAuth(`/api/user/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
